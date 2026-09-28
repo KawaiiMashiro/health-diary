@@ -188,6 +188,7 @@ body.locked{overflow:hidden}
 .meals-bg{background:var(--amber-soft);color:#B4731F}
 .weights-bg{background:var(--primary-soft);color:var(--primary-deep)}
 .walks-bg{background:var(--blue-soft);color:#2D5FD9}
+.dailies-bg{background:var(--card-2);color:var(--text-2)}
 .rec-main{flex:1;min-width:0}
 .rec-t{font-size:14px;font-weight:600;word-break:break-word}
 .rec-s{font-size:11.5px;color:var(--text-3);margin-top:2px}
@@ -202,6 +203,11 @@ body.locked{overflow:hidden}
 .ring-v{font-size:27px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.3px}
 .ring-l{font-size:11px;color:var(--text-3);margin-top:2px}
 .goal-hit{color:var(--primary-deep);font-weight:800;font-size:13.5px;margin-top:4px}
+.pace-row{display:flex;align-items:center;gap:8px;background:var(--blue-soft);border-radius:12px;padding:10px 14px;font-size:13px;color:#2D5FD9;font-weight:600;margin:-6px 0 16px}
+.pace-row b{font-size:16px;font-weight:800;font-variant-numeric:tabular-nums}
+.pace-tip{font-size:10.5px;color:var(--text-3);font-weight:400}
+.walk-kcal{margin-top:12px;background:var(--card-2);border-radius:12px;padding:9px 12px;font-size:12.5px;color:var(--text-2)}
+.walk-kcal b{color:var(--text);font-weight:800}
 .goal-sub{color:var(--text-3);font-size:12.5px;margin-top:4px}
 .walk-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
 .stats2x2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -361,18 +367,19 @@ function loadDB(){
     if(d&&typeof d==='object'){
       return {meals:Array.isArray(d.meals)?d.meals:[],weights:Array.isArray(d.weights)?d.weights:[],
               bowels:Array.isArray(d.bowels)?d.bowels:[],walks:Array.isArray(d.walks)?d.walks:[],
+              dailies:Array.isArray(d.dailies)?d.dailies:[],
               deleted:Array.isArray(d.deleted)?d.deleted:[],
               settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
     }
   }catch(e){}
-  return {meals:[],weights:[],bowels:[],walks:[],deleted:[],settings:Object.assign({},DEF_SETTINGS)};
+  return {meals:[],weights:[],bowels:[],walks:[],dailies:[],deleted:[],settings:Object.assign({},DEF_SETTINGS)};
 }
 let db=loadDB();
 
 /* ================= 云同步（同步码模式） ================= */
 const SYNC_CONF_KEY='health_diary_sync';
 const SYNC_ROOT='https://textdb.dev/api/data/';
-const TYPES=['meals','weights','bowels','walks'];
+const TYPES=['meals','weights','bowels','walks','dailies'];
 let syncConf=null,syncing=false,syncDebTimer=null,syncStatus='ok',syncErrMsg='';
 try{const sc=JSON.parse(localStorage.getItem(SYNC_CONF_KEY));if(sc&&sc.code&&sc.k)syncConf=sc}catch(e){}
 function saveSyncConf(){try{localStorage.setItem(SYNC_CONF_KEY,JSON.stringify(syncConf))}catch(e){}}
@@ -389,10 +396,12 @@ function recStamp(r){
   }
   return r;
 }
-(function migrateDB(){
+/* 迁移：为旧记录补 updatedAt（按记录日期时间推导），确保可合并
+   注意：只能在全部工具函数初始化后调用（见启动区），避免声明时序问题 */
+function migrateDB(){
   if(!Array.isArray(db.deleted))db.deleted=[];
   TYPES.forEach(t=>{if(!Array.isArray(db[t]))db[t]=[];db[t].forEach(recStamp)});
-})();
+}
 
 /* ---- 加密工具（Web Crypto, AES-GCM） ---- */
 const b64=u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)};
@@ -479,7 +488,7 @@ async function syncNow(manual){
       }
     }
     const before=canon(buildPayload());
-    if(cloud)mergePayload(cloud);
+    if(cloud){mergePayload(cloud);migrateWalks()}
     const afterP=buildPayload();
     const after=canon(afterP);
     if(after!==before){save();render(cur)}
@@ -658,7 +667,7 @@ function removeRecord(type,id){
   if(db.deleted.length>500)db.deleted=db.deleted.slice(-400);
   db[type]=db[type].filter(x=>x.id!==id);
 }
-function recordDays(){const s=new Set();['meals','weights','bowels','walks'].forEach(t=>db[t].forEach(r=>s.add(r.date)));return s.size}
+function recordDays(){const s=new Set();['meals','weights','bowels','walks','dailies'].forEach(t=>db[t].forEach(r=>s.add(r.date)));return s.size}
 
 /* ================= 常量表 ================= */
 const MEALS=[
@@ -680,7 +689,7 @@ const BRISTOL=[
 ];
 const EASE={easy:'轻松',normal:'一般',hard:'费力'};
 const BCOLOR=[{v:'棕黄'},{v:'深棕'},{v:'墨绿'},{v:'黑色',warn:1},{v:'红色',warn:1}];
-const TYPE_META={meals:{name:'三餐',icon:'🍚'},weights:{name:'体重',icon:'⚖️'},bowels:{name:'排便',icon:'💩'},walks:{name:'步行',icon:'🚶'}};
+const TYPE_META={meals:{name:'三餐',icon:'🍚'},weights:{name:'体重',icon:'⚖️'},bowels:{name:'排便',icon:'💩'},walks:{name:'锻炼',icon:'🚶'},dailies:{name:'手表汇总',icon:'⌚'}};
 
 /* ================= SVG 图标 ================= */
 const I={
@@ -720,7 +729,9 @@ function bristolGlyph(n){
 function weightsSorted(){return [...db.weights].sort((a,b)=>(a.date+(a.time||'00:00')).localeCompare(b.date+(b.time||'00:00')))}
 function latestWeight(){const s=weightsSorted();return s.length?s[s.length-1]:null}
 function prevWeightRec(){const s=weightsSorted();return s.length>1?s[s.length-2]:null}
-const dailySteps=ds=>byDate(db.walks,ds).reduce((a,b)=>a+(+b.steps||0),0);
+const dailySteps=ds=>{const d=(db.dailies||[]).find(x=>x.date===ds);return d&&d.steps?+d.steps:0};
+const workoutsOf=ds=>(db.walks||[]).filter(w=>w.date===ds);
+const fmtPace=(mins,km)=>{if(!mins||!km)return '—';const sec=Math.round(mins/km*60);return Math.floor(sec/60)+"'"+pad(sec%60)+'"/km'};
 function weightSeries(limit=7){
   const m=new Map();weightsSorted().forEach(w=>m.set(w.date,w.value));
   return [...m.entries()].slice(-limit).map(([d,v])=>({label:shortD(d),value:v}));
@@ -733,8 +744,7 @@ function bmiInfo(){
   if(b<18.5){s='偏瘦';c='amber'}else if(b<24){s='正常';c='good'}else if(b<28){s='超重';c='amber'}else{s='肥胖';c='red'}
   return {v:+b.toFixed(1),s,c};
 }
-const kcalOf=steps=>{const w=latestWeight();const kg=w?w.value:65;return Math.round(steps*0.04*kg/65)};
-const autoKm=steps=>{const h=+db.settings.height;const stride=h?h*0.415/100:0.7;return +(steps*stride/1000).toFixed(2)};
+const dailyRec=ds=>(db.dailies||[]).find(x=>x.date===ds);
 function guessMealType(){const h=new Date().getHours();if(h<10)return 'breakfast';if(h<14)return 'lunch';if(h<17)return 'snack';if(h<21)return 'dinner';return 'snack'}
 const easeName=v=>EASE[v]||'一般';
 
@@ -910,10 +920,8 @@ function openWeightSheet(entry,date){
       <div class="field"><label>体重</label><div class="big-input-wrap">
         <input type="number" step="0.1" inputmode="decimal" class="big-num" id="wVal" placeholder="0.0" value="${isEdit?entry.value:''}"><span class="unit">kg</span>
       </div></div>
-      <div class="row2">
-        <div class="field"><label>时间</label><input type="time" class="input" id="wTime" value="${isEdit?entry.time:nowHM()}"></div>
-        <div class="field"><label>备注</label><input class="input" id="wNote" maxlength="30" placeholder="选填" value="${isEdit?esc(entry.note||''):''}"></div>
-      </div>`,
+      <div class="field"><label>时间</label><input type="time" class="input" id="wTime" value="${isEdit?entry.time:nowHM()}"></div>
+      <div class="field"><label>备注</label><textarea class="input" id="wNote" maxlength="500" placeholder="选填，最多 500 字">${isEdit?esc(entry.note||''):''}</textarea></div>`,
     onSubmit(){
       const v=+$('#wVal').value;
       if(!(v>=20&&v<=500)){toast('体重请在 20 – 500 kg 之间','warn');return false}
@@ -946,7 +954,7 @@ function openBowelSheet(entry,date){
       <div class="field"><label>颜色</label><div class="chips" id="bColor">${BCOLOR.map(c=>`<button type="button" class="chip ${c.v===color?'on':''}" data-v="${c.v}">${c.v}</button>`).join('')}</div>
         <div class="hint-warn" id="bWarn" hidden>黑色或红色可能与消化道出血相关，若持续出现或伴随不适，建议尽快咨询医生。</div>
       </div>
-      <div class="field"><label>备注</label><input class="input" id="bNote" maxlength="50" placeholder="选填" value="${isEdit?esc(entry.note||''):''}"></div>`,
+      <div class="field"><label>备注</label><textarea class="input" id="bNote" maxlength="500" placeholder="选填，最多 500 字">${isEdit?esc(entry.note||''):''}</textarea></div>`,
     onSubmit(){
       const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),
         time:$('#bTime').value||nowHM(),
@@ -964,27 +972,57 @@ function openWalkSheet(entry,date){
   const isEdit=!!entry;
   const d=isEdit?entry.date:(date||view.walk);
   openSheet({
-    title:isEdit?'编辑步行记录':'记录步行',
+    title:isEdit?'编辑锻炼记录':'记录一次锻炼步行',
     html:`
-      <div class="field"><label>走了多少步</label><div class="big-input-wrap">
-        <input type="number" inputmode="numeric" class="big-num" id="wSteps" placeholder="0" value="${isEdit?entry.steps:''}"><span class="unit">步</span>
-      </div></div>
       <div class="row2">
-        <div class="field"><label>时长（分钟）</label><input type="number" inputmode="numeric" class="input" id="wMins" min="0" max="600" placeholder="选填" value="${isEdit&&entry.mins?entry.mins:''}"></div>
-        <div class="field"><label>距离（公里）</label><input type="number" inputmode="decimal" class="input" id="wKm" min="0" step="0.1" placeholder="自动估算" value="${isEdit&&entry.km?entry.km:''}" ${isEdit?'data-auto="0"':'data-auto="1"'}></div>
+        <div class="field"><label>时长（分钟）</label><input type="number" inputmode="numeric" class="input" id="wMins" min="1" max="600" placeholder="如 45" value="${isEdit&&entry.mins?entry.mins:''}"></div>
+        <div class="field"><label>距离（公里）</label><input type="number" inputmode="decimal" class="input" id="wKm" min="0" step="0.01" placeholder="如 4.5" value="${isEdit&&entry.km?entry.km:''}"></div>
       </div>
-      <div class="field"><label>备注</label><input class="input" id="wNote" maxlength="30" placeholder="选填" value="${isEdit?esc(entry.note||''):''}"></div>`,
+      <div class="pace-row">每公里配速 <b id="wPace">${fmtPace(isEdit?entry.mins:0,isEdit?entry.km:0)}</b><span class="pace-tip">时长 ÷ 距离，自动计算</span></div>
+      <div class="row2">
+        <div class="field"><label>平均心率（bpm）</label><input type="number" inputmode="numeric" class="input" id="wHr" min="40" max="220" placeholder="选填" value="${isEdit&&entry.hr?entry.hr:''}"></div>
+        <div class="field"><label>动态千卡</label><input type="number" inputmode="numeric" class="input" id="wKcal" min="0" max="3000" placeholder="选填，手表数值" value="${isEdit&&entry.kcal?entry.kcal:''}"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>心率下限</label><input type="number" inputmode="numeric" class="input" id="wHrMin" min="40" max="220" placeholder="选填" value="${isEdit&&entry.hrMin?entry.hrMin:''}"></div>
+        <div class="field"><label>心率上限</label><input type="number" inputmode="numeric" class="input" id="wHrMax" min="40" max="220" placeholder="选填" value="${isEdit&&entry.hrMax?entry.hrMax:''}"></div>
+      </div>
+      <div class="field"><label>备注</label><textarea class="input" id="wNote" maxlength="500" placeholder="路线、状态、感受……选填，最多 500 字">${isEdit?esc(entry.note||''):''}</textarea></div>`,
     onSubmit(){
-      const steps=Math.round(+$('#wSteps').value);
-      if(!(steps>=1)){toast('步数要大于 0 哦','warn');return false}
-      if(steps>200000){toast('步数好像太多了','warn');return false}
+      const mins=Math.round(+$('#wMins').value)||0;
+      const km=+$('#wKm').value||0;
+      if(!(mins>0)&&!(km>0)){toast('时长和距离至少填一项','warn');return false}
+      const num=(id,mn,mx)=>{const v=+$('#'+id).value;return v?(v<mn||v>mx?null:v):null};
+      const hr=num('wHr',40,220),hrMin=num('wHrMin',40,220),hrMax=num('wHrMax',40,220),kcal=num('wKcal',0,5000);
+      if(hr===null||hrMin===null||hrMax===null||kcal===null){toast('心率 / 千卡的数值范围看起来不对','warn');return false}
       const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),time:nowHM(),
-        steps,mins:+$('#wMins').value||0,
-        km:+(+$('#wKm').value||autoKm(steps)).toFixed(1),
-        note:$('#wNote').value.trim()};
+        mins,km:+km.toFixed(2),hr,hrMin,hrMax,kcal,note:$('#wNote').value.trim()};
       if(isEdit){rec.time=entry.time||nowHM();Object.assign(entry,rec)}else db.walks.push(rec);
       save();render(cur);
-      toast(isEdit?'已更新':'走路记录已保存');
+      toast(isEdit?'已更新':'锻炼已记录 💪');
+    }
+  });
+}
+function openDailySheet(date){
+  const d=date||view.walk;
+  const ex=dailyRec(d);
+  openSheet({
+    title:'手表每日数据'+(d===todayStr()?'':'（'+dateLabel(d)+'）'),
+    html:`
+      <div class="field"><label>当天总步数</label><div class="big-input-wrap">
+        <input type="number" inputmode="numeric" class="big-num" id="dSteps" placeholder="0" value="${ex&&ex.steps?ex.steps:''}"><span class="unit">步</span>
+      </div></div>
+      <div class="field"><label>全天总千卡（选填）</label><input type="number" inputmode="numeric" class="input" id="dKcal" min="0" max="8000" placeholder="手表显示的总千卡" value="${ex&&ex.kcal?ex.kcal:''}"></div>
+      <div class="sync-tip">填入手表「健身记录」的全天数据，晚上记一次即可；重复保存会更新当天数值。</div>`,
+    onSubmit(){
+      const steps=Math.round(+$('#dSteps').value);
+      if(!(steps>=0&&steps<=200000)){toast('总步数范围 0 – 200000','warn');return false}
+      const kcal=(+$('#dKcal').value)||null;
+      let r=dailyRec(d);
+      if(r){r.steps=steps;r.kcal=kcal;r.updatedAt=Date.now()}
+      else db.dailies.push({id:uid(),date:d,updatedAt:Date.now(),steps,kcal});
+      save();render(cur);
+      toast('手表数据已记录 ⌚');
     }
   });
 }
@@ -1050,7 +1088,8 @@ function renderHome(){
     {emoji:'☀️',name:'吃午餐',done:slotDone[1],act:'open-meal-t',type:'lunch'},
     {emoji:'🌙',name:'吃晚餐',done:slotDone[2],act:'open-meal-t',type:'dinner'},
     {emoji:'💩',name:'排便打卡',done:bowelT>0,act:'open-bowel-t'},
-    {emoji:'🚶',name:'步行锻炼',done:steps>0,act:'open-walk-t'},
+    {emoji:'🚶',name:'锻炼步行',done:workoutsOf(t).length>0,act:'open-walk-t'},
+    {emoji:'⌚',name:'填手表每日数据',done:!!dailyRec(t),act:'open-daily'},
   ];
   const doneCnt=items.filter(i=>i.done).length;
 
@@ -1060,7 +1099,9 @@ function renderHome(){
   const bowelSub=bowelT>0?'今天已记录':(lastB?(sinceB>0?`距上次 ${sinceB} 天`:'就在今天'):'点击记录');
   const walkPct=goal?Math.round(steps/goal*100):0;
   const walkVal=steps>=10000?(steps/10000).toFixed(1)+'<small>万</small>':(steps?String(steps):'—');
-  const walkSub=steps<=0?'去走一走':(steps>=goal?`目标达成 ${walkPct}% 🎉`:`完成目标 ${walkPct}%`);
+  const wOut=workoutsOf(t);
+  const outKm=+wOut.reduce((a,e)=>a+(+e.km||0),0).toFixed(1);
+  const walkSub=steps<=0?(wOut.length?`今日锻炼 ${wOut.length} 次 · ${outKm} km`:'去锻炼 / 填手表'):(steps>=goal?`目标达成 ${walkPct}% 🎉`:`完成目标 ${walkPct}%${wOut.length?` · 锻炼 ${outKm} km`:''}`);
 
   $('#page-home').innerHTML=`
     <div class="home-head">
@@ -1220,52 +1261,64 @@ function renderBowel(){
 /* ---- 步行 ---- */
 function renderWalk(){
   const d=view.walk,t=todayStr();
-  const entries=byDate(db.walks,d);
-  const steps=dailySteps(d);
+  const list=workoutsOf(d).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const dr=dailyRec(d);
+  const steps=dr&&dr.steps?+dr.steps:0;
   const goal=+db.settings.stepGoal||8000;
-  const dist=+entries.reduce((a,e)=>a+(+e.km||0),0).toFixed(1);
-  const mins=entries.reduce((a,e)=>a+(+e.mins||0),0);
-  const kcal=kcalOf(steps);
+  const dist=+list.reduce((a,e)=>a+(+e.km||0),0).toFixed(1);
+  const mins=list.reduce((a,e)=>a+(+e.mins||0),0);
+  const kcal=list.reduce((a,e)=>a+(+e.kcal||0),0);
   const pct=goal?Math.min(1,steps/goal):0;
   const week=lastNDays(7);
+  const wCnt=week.reduce((a,x)=>a+workoutsOf(x).length,0);
+  const wMins=week.reduce((a,x)=>a+workoutsOf(x).reduce((b,e)=>b+(+e.mins||0),0),0);
+  const wKm=+week.reduce((a,x)=>a+workoutsOf(x).reduce((b,e)=>b+(+e.km||0),0),0).toFixed(1);
   const weekSteps=week.reduce((a,x)=>a+dailySteps(x),0);
   const weekGoal=week.filter(x=>dailySteps(x)>=goal).length;
-  const maxDay=Math.max(...week.map(x=>dailySteps(x)),0);
   const chartItems=week.map(x=>({label:shortD(x),value:dailySteps(x),today:x===t}));
-  const noHeight=!+db.settings.height;
+  const hrTxt=e=>e.hr?` · 心率 ${e.hr}${e.hrMin||e.hrMax?`（${e.hrMin||'—'}–${e.hrMax||'—'}）`:''}`:'';
 
   $('#page-walk').innerHTML=`
-    <div class="page-head"><h1>步行锻炼</h1><div class="page-sub">每一步都算数</div></div>
+    <div class="page-head"><h1>步行锻炼</h1><div class="page-sub">记录每一次主动锻炼</div></div>
     ${dateNav('walk')}
     <div class="card walk-hero">
-      <div class="ring-wrap">${svgRing(pct)}<div class="ring-c"><div class="ring-v">${shortNum(steps)}</div><div class="ring-l">/ ${shortNum(goal)} 步</div></div></div>
-      ${steps>=goal?'<div class="goal-hit">🎉 今日目标已达成</div>':`<div class="goal-sub">${goal?`还差 ${shortNum(Math.max(0,goal-steps))} 步达成目标`:'先到「数据」页设置每日目标吧'}</div>`}
+      <div class="ring-wrap">${svgRing(pct)}<div class="ring-c"><div class="ring-v">${shortNum(steps)}</div><div class="ring-l">总步数 / 目标 ${shortNum(goal)}</div></div></div>
+      ${dr?(steps>=goal?'<div class="goal-hit">🎉 步数目标已达成</div>':`<div class="goal-sub">距目标还差 ${shortNum(Math.max(0,goal-steps))} 步</div>`):'<div class="goal-sub">晚上记得到下面「手表每日数据」里填入全天步数</div>'}
       <div class="walk-stats">
-        <div class="ws"><div class="ws-v">${dist}</div><div class="ws-l">公里</div></div>
-        <div class="ws"><div class="ws-v">${mins}</div><div class="ws-l">分钟</div></div>
-        <div class="ws"><div class="ws-v">≈${kcal}</div><div class="ws-l">千卡</div></div>
+        <div class="ws"><div class="ws-v">${list.length}</div><div class="ws-l">锻炼（次）</div></div>
+        <div class="ws"><div class="ws-v">${mins}</div><div class="ws-l">时长（分钟）</div></div>
+        <div class="ws"><div class="ws-v">${dist}</div><div class="ws-l">距离（公里）</div></div>
+      </div>
+      ${kcal?`<div class="walk-kcal">今日锻炼动态消耗 <b>${kcal}</b> 千卡${dr&&dr.kcal?` · 全天总千卡 <b>${dr.kcal}</b>`:''}</div>`:(dr&&dr.kcal?`<div class="walk-kcal">手表全天总千卡 <b>${dr.kcal}</b></div>`:'')}
+    </div>
+    <button type="button" class="btn btn-primary btn-block" data-act="open-walk">＋ 记一次锻炼步行</button>
+    <div class="card" data-act="open-daily" style="cursor:pointer">
+      <div class="card-h"><div><div class="card-t">手表每日数据</div><div class="card-s">${dr?dateLabel(d)+' 已填写':'点击填入手表全天数据'}</div></div><button type="button" class="btn btn-ghost sm" data-act="open-daily">${dr?'修改':'填写'}</button></div>
+      <div class="daily-grid">
+        <div class="dg"><div class="dg-e">👟</div><div class="dg-v">${dr?shortNum(dr.steps):'—'}</div><div class="dg-l">总步数</div></div>
+        <div class="dg"><div class="dg-e">🔥</div><div class="dg-v">${dr&&dr.kcal?dr.kcal:'—'}</div><div class="dg-l">全天总千卡</div></div>
+        <div class="dg"><div class="dg-e">🎯</div><div class="dg-v">${goal?Math.round(steps/goal*100)+'%':'—'}</div><div class="dg-l">目标完成度</div></div>
       </div>
     </div>
-    <button type="button" class="btn btn-primary btn-block" data-act="open-walk">＋ 记录一次步行</button>
-    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天步数</div><div class="card-s">每天目标 ${shortNum(goal)} 步</div></div></div>
+    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天总步数</div><div class="card-s">来自手表每日数据 · 目标 ${shortNum(goal)} 步/天</div></div></div>
       ${svgBars(chartItems,{goal})}
     </div>
-    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天统计</div></div></div>
+    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天锻炼统计</div></div></div>
       <div class="stats2x2">
-        <div class="ws"><div class="ws-v">${shortNum(weekSteps)}</div><div class="ws-l">总步数</div></div>
-        <div class="ws"><div class="ws-v">${shortNum(weekSteps/7)}</div><div class="ws-l">日均步数</div></div>
-        <div class="ws"><div class="ws-v">${weekGoal}<small style="font-size:12px;color:var(--text-3)">/7</small></div><div class="ws-l">达标天数</div></div>
-        <div class="ws"><div class="ws-v">${shortNum(maxDay)}</div><div class="ws-l">单日最高</div></div>
+        <div class="ws"><div class="ws-v">${wCnt}</div><div class="ws-l">锻炼次数</div></div>
+        <div class="ws"><div class="ws-v">${wMins}</div><div class="ws-l">总时长（分钟）</div></div>
+        <div class="ws"><div class="ws-v">${wKm}</div><div class="ws-l">总距离（公里）</div></div>
+        <div class="ws"><div class="ws-v">${wCnt?fmtPace(wMins,wKm):'—'}</div><div class="ws-l">平均配速</div></div>
       </div>
     </div>
-    ${entries.length?`<div class="card"><div class="card-h"><div><div class="card-t">${dateLabel(d)}的步行</div><div class="card-s">点击可编辑，一天可记多段</div></div></div>
-      ${entries.map(e=>`<div class="rec" data-act="edit-walk" data-id="${e.id}">
+    ${list.length?`<div class="card"><div class="card-h"><div><div class="card-t">${dateLabel(d)}的锻炼</div><div class="card-s">点击可编辑，一天可记多段</div></div></div>
+      ${list.map(e=>`<div class="rec" data-act="edit-walk" data-id="${e.id}">
         <div class="rec-ic walks-bg">${ic('walk')}</div>
-        <div class="rec-main"><div class="rec-t">${shortNum(e.steps)} 步${e.km?` · ${e.km} km`:''}</div>
-        <div class="rec-s">${e.time||'--:--'}${e.mins?` · ${e.mins} 分钟`:''}${e.note?' · '+esc(e.note):''}</div></div>
+        <div class="rec-main"><div class="rec-t">${e.mins?e.mins+' 分钟':''}${e.km?`${e.mins?' · ':''}${e.km} km`:''} · 配速 ${fmtPace(e.mins,e.km)}</div>
+        <div class="rec-s">${e.time||'--:--'}${hrTxt(e)}${e.kcal?` · 动态 ${e.kcal} 千卡`:''}${e.note?' · '+esc(e.note):''}</div></div>
         <button type="button" class="rec-del" data-act="del-walk" data-id="${e.id}" aria-label="删除">${ic('trash')}</button>
-      </div>`).join('')}</div>`:''}
-    ${noHeight?`<div class="tip-card">📏 在「数据」页填写身高后，步行距离会按你的步幅自动估算（当前按 0.7 米/步）。</div>`:''}`;
+      </div>`).join('')}</div>`:`<div class="card"><div class="empty"><div class="empty-emoji">🚶</div><div>${d===t?'今天还没有锻炼记录':'当天没有锻炼记录'}</div></div></div>`}
+    <div class="tip-card">💡 只记录主动锻炼；上下班等日常活动走量，晚上通过手表每日数据一次性填入即可。</div>`;
 }
 
 /* ---- 数据与设置 ---- */
@@ -1273,11 +1326,12 @@ function sumOf(t,r){
   if(t==='meals')return esc(r.content)+(r.cal?` · ${r.cal} 千卡`:'');
   if(t==='weights')return `${fmt1(r.value)} kg`;
   if(t==='bowels')return `${r.bristol} 型 · ${easeName(r.ease)}`;
-  return `${shortNum(r.steps)} 步${r.km?` · ${r.km} km`:''}`;
+  if(t==='dailies')return `总步数 ${shortNum(r.steps)}${r.kcal?` · ${r.kcal} 千卡`:''}`;
+  return `${r.mins?r.mins+' 分钟':''}${r.km?`${r.mins?' · ':''}${r.km} km`:''} · 配速 ${fmtPace(r.mins,r.km)}`;
 }
 function allRecords(){
   const out=[];
-  for(const t of ['meals','weights','bowels','walks'])db[t].forEach(r=>out.push({t,r}));
+  for(const t of ['meals','weights','bowels','walks','dailies'])db[t].forEach(r=>out.push({t,r}));
   out.sort((a,b)=>((b.r.date||'')+(b.r.time||'')).localeCompare((a.r.date||'')+(a.r.time||'')));
   return out;
 }
@@ -1286,16 +1340,16 @@ function renderData(){
   const bmi=bmiInfo();
   const lw=latestWeight();
   const days=recordDays();
-  const allDates=new Set();['meals','weights','bowels','walks'].forEach(t=>db[t].forEach(r=>allDates.add(r.date)));
+  const allDates=new Set();['meals','weights','bowels','walks','dailies'].forEach(t=>db[t].forEach(r=>allDates.add(r.date)));
   const sorted=[...allDates].sort();
   const range=sorted.length?`${shortD(sorted[0])} – ${shortD(sorted[sorted.length-1])}`:'—';
-  const counts={meals:db.meals.length,weights:db.weights.length,bowels:db.bowels.length,walks:db.walks.length};
+  const counts={meals:db.meals.length,weights:db.weights.length,bowels:db.bowels.length,walks:db.walks.length,dailies:db.dailies?db.dailies.length:0};
   const total=counts.meals+counts.weights+counts.bowels+counts.walks;
 
   let rows=allRecords();
   if(state.browse!=='all')rows=rows.filter(x=>x.t===state.browse);
   rows=rows.slice(0,60);
-  const browseChips=[['all','全部 '+total],['meals','三餐 '+counts.meals],['weights','体重 '+counts.weights],['bowels','排便 '+counts.bowels],['walks','步行 '+counts.walks]]
+  const browseChips=[['all','全部 '+total],['meals','三餐 '+counts.meals],['weights','体重 '+counts.weights],['bowels','排便 '+counts.bowels],['walks','锻炼 '+counts.walks],['dailies','手表 '+counts.dailies]]
     .map(([v,n])=>`<button type="button" class="chip ${state.browse===v?'on':''}" data-act="browse-type" data-v="${v}">${n}</button>`).join('');
   const browseRows=rows.length?rows.map(({t,r})=>`<div class="rec" data-act="edit-any" data-type="${t}" data-id="${r.id}">
       <div class="rec-ic emoji ${t}-bg">${TYPE_META[t].icon}</div>
@@ -1321,7 +1375,7 @@ function renderData(){
         <div class="dg"><div class="dg-e">🍚</div><div class="dg-v">${counts.meals}</div><div class="dg-l">三餐记录</div></div>
         <div class="dg"><div class="dg-e">⚖️</div><div class="dg-v">${counts.weights}</div><div class="dg-l">体重记录</div></div>
         <div class="dg"><div class="dg-e">💩</div><div class="dg-v">${counts.bowels}</div><div class="dg-l">排便记录</div></div>
-        <div class="dg"><div class="dg-e">🚶</div><div class="dg-v">${counts.walks}</div><div class="dg-l">步行记录</div></div>
+        <div class="dg"><div class="dg-e">🚶</div><div class="dg-v">${counts.walks}</div><div class="dg-l">锻炼记录</div></div>
       </div>
       <div class="stat-line">共记录 <b>${days}</b> 天 · ${range}</div>
     </div>
@@ -1342,7 +1396,7 @@ function renderData(){
       <div class="chips" style="margin-bottom:8px">${browseChips}</div>
       ${browseRows}
     </div>
-    <div class="foot-note">健康手账 v1.3 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
+    <div class="foot-note">健康手账 v1.4 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
 }
 
 /* ================= 数据操作 ================= */
@@ -1371,7 +1425,7 @@ function doImport(inp){
     if(!ok){toast('文件格式不正确，导入失败','warn');return}
     const n=d.meals.length+d.weights.length+d.bowels.length+d.walks.length;
     confirmDialog({title:'导入备份',msg:`备份中有 ${n} 条记录，导入后将覆盖当前全部数据和设置。确定继续吗？`,okText:'导入',onOk:()=>{
-      db={meals:d.meals,weights:d.weights,bowels:d.bowels,walks:d.walks,deleted:Array.isArray(d.deleted)?d.deleted:[],settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
+      db={meals:d.meals,weights:d.weights,bowels:d.bowels,walks:d.walks,dailies:Array.isArray(d.dailies)?d.dailies:[],deleted:Array.isArray(d.deleted)?d.deleted:[],settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
       save();go('home');toast('导入成功，共恢复 '+n+' 条记录');
       /* 备份里带同步码时，一并恢复绑定 */
       const code=normCode(d.sync&&d.sync.code);
@@ -1399,10 +1453,13 @@ function buildDemo(){
     if(Math.random()<.95)db.meals.push({id:uid(),date:d,type:'lunch',time:rm(12,13),content:pick(lF),cal:500+Math.floor(Math.random()*220),satis:satis()});
     if(Math.random()<.9)db.meals.push({id:uid(),date:d,type:'dinner',time:rm(18,19),content:pick(dF),cal:400+Math.floor(Math.random()*180),satis:satis()});
     if(Math.random()<.4)db.meals.push({id:uid(),date:d,type:'snack',time:Math.random()<.5?rm(15,16):rm(20,21),content:pick(sF),cal:80+Math.floor(Math.random()*120),satis:1});
-    const base=3000+Math.floor(Math.random()*8000);
-    db.walks.push({id:uid(),date:d,time:rm(19,20),steps:base,mins:Math.round(base/95),km:+(base*.00072).toFixed(1)});
-    if(Math.random()<.35){const b2=1500+Math.floor(Math.random()*3000);
-      db.walks.push({id:uid(),date:d,time:rm(12,13),steps:b2,mins:Math.round(b2/95),km:+(b2*.00072).toFixed(1)});}
+    const steps=3000+Math.floor(Math.random()*9000);
+    db.dailies.push({id:uid(),date:d,updatedAt:Date.now(),steps,kcal:Math.random()<.8?320+Math.floor(Math.random()*280):null});
+    if(i!==0&&Math.random()<.6){
+      const mins=40+Math.floor(Math.random()*30);
+      const km=+(3+Math.random()*2.5).toFixed(1);
+      db.walks.push({id:uid(),date:d,time:rm(19,20),mins,km,hr:118+Math.floor(Math.random()*18),hrMin:104+Math.floor(Math.random()*10),hrMax:138+Math.floor(Math.random()*16),kcal:150+Math.floor(Math.random()*130),note:''});
+    }
     if(Math.random()<.62){
       const br=[2,3,3,4,4,4,4,5,5,6][Math.floor(Math.random()*10)];
       db.bowels.push({id:uid(),date:d,time:rm(8,10),bristol:br,
@@ -1451,12 +1508,16 @@ document.addEventListener('click',e=>{
       case 'open-walk-t':openWalkSheet(null,todayStr());break;
       case 'edit-walk':openWalkSheet(findById('walks',id));break;
       case 'del-walk':confirmDel('walks',id);break;
+      case 'open-daily':openDailySheet(cur==='walk'?view.walk:todayStr());break;
+      case 'edit-daily':openDailySheet(findById('dailies',id).date);break;
+      case 'del-daily':confirmDel('dailies',id);break;
       case 'edit-any':{
         const t=el.dataset.type,r=findById(t,id);
         if(!r)break;
         if(t==='meals')openMealSheet(r);
         else if(t==='weights')openWeightSheet(r);
         else if(t==='bowels')openBowelSheet(r);
+        else if(t==='dailies')openDailySheet(r.date);
         else openWalkSheet(r);
         break;}
       case 'del-any':confirmDel(el.dataset.type,id);break;
@@ -1510,21 +1571,39 @@ document.addEventListener('change',e=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='syncCodeInput'){e.preventDefault();syncBind()}
 });
-/* 步行 sheet：步数联动距离 */
+/* 锻炼 sheet：配速实时计算 */
 sheetRoot.addEventListener('input',e=>{
-  if(e.target.id==='wSteps'){
-    const km=$('#wKm');
-    if(km&&km.dataset.auto!=='0'&&$('#sheetForm')){
-      const v=+e.target.value;
-      if(v>0&&v<=200000)km.value=autoKm(Math.round(v));
-    }
+  if(e.target.id==='wMins'||e.target.id==='wKm'){
+    const p=$('#wPace');
+    if(p)p.textContent=fmtPace(+($('#wMins')?$('#wMins').value:0)||0,+($('#wKm')?$('#wKm').value:0)||0);
   }
-  if(e.target.id==='wKm')e.target.dataset.auto='0';
 });
 
 /* ================= 启动 ================= */
+/* 旧版步行数据迁移：纯步数记录折算为每日手表汇总 */
+function migrateWalks(){
+  if(!Array.isArray(db.dailies))db.dailies=[];
+  const daySteps={};
+  let changed=false;
+  db.walks.forEach(w=>{
+    if('steps' in w){
+      if(+w.steps>0)daySteps[w.date]=(daySteps[w.date]||0)+Math.round(+w.steps);
+      delete w.steps;
+      w.km=+w.km||0;w.mins=+w.mins||0;
+      changed=true;
+    }
+  });
+  if(!changed)return false;
+  db.walks=db.walks.filter(w=>w.mins>0||w.km>0||(w.note&&w.note.trim()));
+  for(const[ds,steps]of Object.entries(daySteps)){
+    if(!db.dailies.some(x=>x.date===ds))db.dailies.push({id:uid(),date:ds,updatedAt:Date.now(),steps,kcal:null});
+  }
+  return true;
+}
 $('#nav').innerHTML=[['home','首页','home'],['meals','三餐','meal'],['bowel','排便','poop'],['walk','步行','walk'],['data','数据','data']]
   .map(([p,n,i])=>`<button type="button" class="nav-item${p==='home'?' active':''}" data-act="goto" data-page="${p}" aria-label="${n}">${ic(i)}<span>${n}</span></button>`).join('');
+migrateDB();
+if(migrateWalks())save();
 go('home');
 /* 已开启云同步：启动 1 秒后自动拉取一次 */
 setTimeout(()=>{if(syncConf)syncNow()},1000);
