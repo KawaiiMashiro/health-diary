@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0E9F6E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAALmklEQVR42u2baZAd1XXHf/fe7re/0cxIA8IaDYMUsw2LLBYrAmQSRJwxtokNFWM7wRTYjl2U+WAITipVKSoxjjFYBpJgTKgUZTByXGJzEIKSjRJtaLN2D4hBiyUhRsy+vK1f33vzoXueZiTNm+1JpEpzpk7V1Ot6591z7v+c87+nu8X0tf9kOYPF4Yx2HxysnQrAmR0AM4WAMzsAdqoITqXAVADO8C4wVQPO9C5QmQBIIQj+jokFjLXYCfJtgQjtDrdpsZgKrXtSCBAIlJD4VpP1i3jGR9tjOeVIRVQ6xKSDFALf2tCF8lYdITDWkjdFCsbHN7p0VQlJRDrElIMjFNqaCQd4AgEQgQM2cC6vi3T5eWrcBE3pmVyYOpumqpkIwLeG3/Uc4t2BdvZlOsjrItVuHCVkECQhhgRDgLWlax3FHDHlMic5g/NTdVxRPRtHSCzw+7423hk4yt6BdtqLfaSdGDHlBkESQ9Z4aoqgBQGOkHQWBmhMTOc7cxbx5dnzuSg9EyXkCd/Iao8NXQdYeuh3vHBkB/3FPFVuDN+YYXYdKekr5kk4Ee46dwFfnn0FC2obSajICTa1Nbzd38bSQ1v55eGtHMh2Mj2SxLeG8SJa1Lxyvx3P/iMEXYUMtzd+kocu+TwzY1VDFjY832WYw4Oypfsg92xfxlud+6mLpUpBcKSkPT/AH08/j8fn3cqVNQ2l7xhrMUNsBml3zGZbvo/v7f41Pz+wkdpoEuz4EkLFb1v4wBj2PSxvlqzv8di8W/jBJZ8j5UTxrQ5CIwJnh6oQolQIDZb6eDW3zb6CLi/D6va9pFQEiaCjkOFbc67huau/RmOyFt8GLouT2JShTWstGkOVG+cLH7uMumiKV4/sxhUSEFjssOI56S4ghaDLy/GfV32VOxoXoK1BCoEj1KioCXZMoK0h6UT46fzbwMJ/7FsPwLfmXBN8FsLbOUkqHW9TCIFElTrC3XMXkVQR7tz8C2ojiRCNY/ALW+otI6qDpDOf4e6513FH4wKKRpfa3nhECYmxFm0tS+bdwsVVM7m4aiZL5t2CtoEjahTnR2qVRaO5o3EBd8+9js58BgfJWHwT1S/ca8tHSJAzRc5PncX6G+8jKl2kYNzODxVjLVIIdva8D8Bl1bNKn01UAiRAwRRZuPIR3h34kLh0h9WPk/tnLOVUAjkvz30XLiahImFuCSYjg3l8WfUsLquehQ0/m4yIMO8TKsJ9Fy4m5+WRQbRH8c9aRlJhIecXmZOqo/mcJqy1wyrw5BYcFkdrqYzFoNZYa2k+p4k5qTpyfhERVMwRVZa5hkSQ9fJcO2Mu06NJDEx6949HghSVsycQGGB6NMm1M+aS9fJIBOV9LHfVWqwxXF5TX+LglRRtzTCaWwkZZCKX19RjjWE0/8pSYYPBkQ7zquuD1lPBhZYqvqAidWVYiwTmVdfjSAczCjssjwATRkmqiu6SCTnEi3s28pNNy0vOVxJhjlTDfBgZAeXG4kGlQlQwTwPnJf+87gX+cdXz4HvsbD/IE5++i6hyA1JZCSQIMdz5iRAhgUBrn7e7jwQ7ZCfvvBCC1q4P+P6aZcSjCWqm1fHM5hX878EWpBABZCdTA8I1vt19BK39AF1lfJTWWkZSbMC5d3QdOnYYmmSBEgge2fgqnl/AlQqtDdJxeWnPZioR5cE17ug6NMyHkbRsDTBaE5EO69veI6e9EoGZ6O4roWjt+oBf7F5NPJrEWovBoJwIK/fvpN/LoaRiolOqQUKV0x7r294jIh2M1uV5QNkAGENSRdjR8QfWtrUiykA04PimbLQB7nvzOTKFHK5UDBTzaGuIORH2d7ex7vCesPvYIZA+0c7gb42UYmvbWtnR8QeSKoIZpRVKDIyoYZ4oBI/tWjkiQm3I45WQiPAYfLwqqVhz6G3+e88m0vEUOd9j0eyLiDkBvcboYWlgCZw9ma3B37Ij5P9ju1aihuZ+GR9HJUJaa9JunOUHtvNkyyocKSkOIS+WYJHvdB5h45FWegpZevKZYdqVG6Az18/3172IROBrn7pEFctuuZe5NWeTKxaIRuKs3L+DvkIWJVUwYBWC7vxAyWZ3aK+l4zAbj7QOq0lFo3Gk5MmWVSw/sJ20G0ePAv9RiVAJWtqQduPcu24pV9Q1clXdecGRGIGSkhf3bOIrLy3BCEldoiowPtg6w/+NNXTnMqTiSXozPfzdwr9gRjzNnzRcwpaD75BOJdjf8yHbjh5g0eyLyBQL/O2bz7Ks5S1ibhQzBBEDXp6+TC9/v+gvefBTt+EZn6hy2dy+n3vXLSXtxjHajGk2WLYLHMs5E3Jqy83LH2XD0b24MhhGaGt4fPNreNqnKhIPdn0oCsL/+wo5EpEouWKes6pm8O35f4bFcuuFn8SNxIIaoX1W7N2OEIIlm17lyfUvkdVFuvID9OQz9Ia2hIBEPMXjW1bQnc8QVS5vtb3HzcsfDSt7EPCx+DamgQgWjAk6Qk8hy+KXf8i/7foNjlQoIfnMH83H5jN09neRzWfI5gdOohm6+7vxikWW3HB7gBQEl9Y10FBdR873UI7Lbw/soj3bx8+2/YZ4qhYpxBCbGbK5fnoHesn2d/HF86+mNp7iX3euZPErD9FTyAaV32jG6pdI/+ybdjwsQ4aj6wEvR3PjPO6+9AZumN3Eb/ft4vftB/FCmjtY9QdZpAAK2uf6c5u4vuHi4IaJNSip+JsVT/HUltdJxlPEHJeFsy5gxd5tRJRDRDncc2UzUcdFG0PCieAqRUEXaag9m+dbN/DrvVtIRRPhxMkcS7+x8Ib0T79hx8UywvSWQtLr5bDW8IkZ53J9/UV8d/5nqE/WjHkipK1BCcnr+7bTvPRB0tEEvtUUfJ90JE5vtpdvXPnnPNX8zdJ3u70sj2xdzlsfvMfq9/egraE6mgghP+7bAoj0E1+fMPUanN9lfQ+vkGF6qpaXP/ddrv3Y+eT9Io6UJ+Xog98bLGr9Xo7Ln76fw30dRB23NECVwLa7fkTDtDqiymHT0X3c9PLDdAx0It046UgMER6rJzyTGK1NjKygjUEbQ0w51CZryRY9bnzhBzzTsoaY42LDU9lQHTr0FEKgjSYdiXPjeZdSLBaQQgZsLp/hq5cs4uO15xBVDls/PMDnX3mEPi9HbbKWlBvFhL/PKFOfCU+EyuuQLmEsni7iSoUSijvfeJJnWlYHXN+OMpYM8/ULF1yNUA4AvtEkY0nuuaoZgJ+3rOWGZQ/Sk88SVxE8XcSY46v8xPyYBAJORIQxBoUg6cb4+htP8b01S0uFaaS7uTIcZl5TfwHnpGvxdJFsboAvXbyQphn1PL17FV97/QkKvk9MuehSha/MulWked4DVFCsDU58Eeny5r5tdBSyfHbOJ8JzxImzBRF2jJgTYWZqGr/avZqzps3g5Vvv59mWNXx75dMk3RiOUAGvr7CI1KN3nJInJETIEnty/Xyl6Tr+ffGdVEcTpco/0lF5w/ut1FfV8vjWN3h4/TKqkjWlc8GpkDETofGqtRZfa2piaZ7fuYrPLguISun2+EkOMtZaFsz6OD/Z8hoPr1tGTbIWawzWWE7VOlXk05c/wCkUbQ2paJJ3O99n7eF3uL6hienxFNqY0kh8EBW9Xo4vvvRjnt35P0xLTMM3GlvhYewJSE3++PbT8pCQIxV9+SxnJdK89qV/YP7ZjfhGl3hBTyHLTb/6IesP7qY6WT3sxHkqpYJdoLz6vk9VNE5nboDmXz7IhiOtJV6wt+coN/3Xv7D+YAvViWqKvs/pWpdI/uivT+NjYhYlFZ5fxBrNMzd/h0vrGvjT5x7gw1w/02IJfK1PMeiPT4GH/uo0PycXHKg87RNRDnE3Qleun6QbC+8SidO6mo/kOUFjDa4M+npfyO6CnWd8J5lKBMB+RA9KDhImhQz4/EckH+mTovb/wQtLUy9NTb0yM/W+wNQ7Q1MImArAVBeYQsCZHIAzuwj+H/f2wLhxxDDwAAAAAElFTkSuQmCC">
+<title>健康手账</title>
+<style>
+/* ============ Design Tokens ============ */
+:root{
+  --bg:#F2F5F1;
+  --card:#FFFFFF;
+  --card-2:#F5F8F4;
+  --text:#1E2A25;
+  --text-2:#5C6A63;
+  --text-3:#98A5A0;
+  --primary:#0E9F6E;
+  --primary-deep:#0B7C56;
+  --primary-soft:#E2F4EB;
+  --border:#E6ECE7;
+  --amber:#E8962A;--amber-soft:#FBF1DF;
+  --brown:#A06B42;--brown-soft:#F5ECE0;
+  --blue:#3E7CFA;--blue-soft:#E8EFFD;
+  --red:#DE4B4B;--red-soft:#FCECEC;
+  --shadow:0 1px 2px rgba(30,42,37,.04),0 6px 20px rgba(30,42,37,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  background:#E9EFEA;color:var(--text);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;border:none;background:none;cursor:pointer;color:inherit}
+input,textarea{font:inherit;color:inherit}
+body.locked{overflow:hidden}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative}
+
+/* ============ Pages ============ */
+.page{display:none;padding:18px 16px 112px;animation:pageIn .3s ease-out}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#page-home{position:relative}
+#page-home::before{content:'';position:absolute;top:-80px;left:-60px;width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(14,159,110,.16),transparent);pointer-events:none}
+#page-home::after{content:'';position:absolute;top:-40px;right:-80px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(232,150,42,.13),transparent);pointer-events:none}
+
+.page-head{margin:6px 2px 14px}
+.page-head h1{font-size:22px;font-weight:800;letter-spacing:.3px}
+.page-sub{font-size:13px;color:var(--text-3);margin-top:3px}
+
+.home-head{display:flex;justify-content:space-between;align-items:flex-start;margin:8px 2px 16px;position:relative}
+.home-hi{font-size:24px;font-weight:800;letter-spacing:.3px}
+.home-date{font-size:13px;color:var(--text-3);margin-top:4px}
+.brand{font-size:12px;font-weight:700;color:var(--primary-deep);background:rgba(255,255,255,.75);border:1px solid var(--border);padding:5px 11px;border-radius:999px;margin-top:4px}
+
+/* ============ Cards ============ */
+.card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);position:relative}
+.card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card-t{font-size:15.5px;font-weight:700}
+.card-s{font-size:11.5px;color:var(--text-3);margin-top:1px}
+.link-btn{font-size:12px;font-weight:700;color:var(--primary-deep);background:var(--primary-soft);padding:6px 12px;border-radius:999px;flex:none}
+.link-btn:active{transform:scale(.94)}
+.foot-note{text-align:center;font-size:11.5px;color:var(--text-3);line-height:1.8;padding:6px 0 12px}
+
+/* ============ Buttons ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 22px;border-radius:999px;font-weight:700;font-size:15px;transition:transform .12s,box-shadow .2s,background .2s}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 6px 16px rgba(14,159,110,.28)}
+.btn-ghost{background:var(--primary-soft);color:var(--primary-deep)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-white{background:#fff;color:var(--primary-deep)}
+.btn-line{border:1.5px solid rgba(255,255,255,.65);color:#fff}
+.btn-block{width:100%;margin-bottom:14px}
+.btn.sm{height:34px;padding:0 14px;font-size:13px}
+
+/* ============ Onboarding ============ */
+.onboard{background:linear-gradient(150deg,#12A876,#0B7C56);color:#fff;border-radius:22px;padding:22px 18px;margin-bottom:14px;box-shadow:0 10px 30px rgba(11,124,86,.25)}
+.onboard h2{font-size:19px;font-weight:800;margin-bottom:8px}
+.onboard p{font-size:13px;opacity:.94;line-height:1.7}
+.onboard-btns{display:flex;gap:10px;margin-top:16px}
+.onboard-btns .btn{flex:1;height:40px;font-size:13.5px;padding:0 8px}
+
+/* ============ Home tiles ============ */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.tile{background:var(--card);border-radius:20px;padding:14px;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s}
+.tile:active{transform:scale(.97)}
+.tile-ic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--tc);background:var(--tcbg);margin-bottom:10px}
+.tile-ic svg{width:20px;height:20px}
+.tile-label{font-size:12px;color:var(--text-3);font-weight:600}
+.tile-value{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;margin:2px 0 3px;letter-spacing:.2px}
+.tile-value small{font-size:11px;font-weight:600;color:var(--text-3);margin-left:2px}
+.tile-sub{font-size:11.5px;color:var(--text-3)}
+.tile-sub.good{color:var(--primary-deep);font-weight:600}
+
+/* checklist */
+.check-row{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px dashed var(--border)}
+.check-row:first-of-type{padding-top:4px}
+.check-row:last-of-type{border-bottom:none;padding-bottom:2px}
+.check-emoji{width:38px;height:38px;border-radius:12px;background:var(--card-2);display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+.check-name{flex:1;font-size:14.5px;font-weight:600}
+.check-done{display:inline-flex;align-items:center;justify-content:center;color:var(--primary-deep);background:var(--primary-soft);width:30px;height:30px;border-radius:999px}
+.check-done svg{width:15px;height:15px}
+.check-go{display:inline-flex;align-items:center;color:var(--text-3);font-size:12.5px;font-weight:700;padding:7px 11px;border-radius:999px;background:var(--card-2)}
+.check-go:active{color:var(--primary-deep);background:var(--primary-soft)}
+
+/* stat chips */
+.chips-stat{display:flex;flex-wrap:wrap;gap:8px}
+.schip{background:var(--card-2);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600;color:var(--text-2)}
+.schip b{color:var(--text);font-weight:800;padding:0 1px}
+
+.chart-empty{padding:32px 8px;text-align:center;color:var(--text-3);font-size:12.5px;border:1.5px dashed var(--border);border-radius:14px;margin:4px 0 2px;line-height:1.7}
+.tip-card{background:var(--amber-soft);color:#8A6210;border-radius:16px;padding:12px 14px;font-size:12.5px;font-weight:500;line-height:1.65;margin-bottom:14px}
+.tip-line{font-size:12.5px;color:var(--text-2);margin-top:12px;padding-top:11px;border-top:1px dashed var(--border);line-height:1.6}
+.remind-card{display:flex;gap:10px;align-items:flex-start;background:var(--amber-soft);color:#8A6210;border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;line-height:1.6}
+.remind-card svg{width:18px;height:18px;flex:none;margin-top:2px}
+.remind-card.red{background:var(--red-soft);color:#B23B3B}
+
+/* ============ Date nav ============ */
+.dnav{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:16px;padding:7px 8px;margin-bottom:14px;box-shadow:var(--shadow)}
+.dnav-btn{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--text-2)}
+.dnav-btn:active{background:var(--card-2)}
+.dnav-btn:disabled{opacity:.28}
+.dnav-btn svg{width:19px;height:19px}
+.dnav-label{font-weight:700;font-size:15px;background:none;padding:6px 8px;border-radius:10px}
+.dnav-label.ghost{color:var(--text-2)}
+.dnav-label:active{background:var(--card-2)}
+
+/* ============ Meals ============ */
+.meal-head{display:flex;align-items:center;gap:11px;margin-bottom:4px}
+.meal-ic{width:40px;height:40px;border-radius:13px;font-size:20px;display:flex;align-items:center;justify-content:center;flex:none}
+.meal-breakfast{background:linear-gradient(135deg,#FFF3DC,#FFE7BF)}
+.meal-lunch{background:linear-gradient(135deg,#FFE9D6,#FFD9AD)}
+.meal-dinner{background:linear-gradient(135deg,#E3ECFF,#D2DFFC)}
+.meal-snack{background:linear-gradient(135deg,#E7F7EE,#D5F0E1)}
+.meal-name{font-size:15px;font-weight:700}
+.meal-hint{font-size:11.5px;color:var(--text-3)}
+.add-mini{width:34px;height:34px;border-radius:11px;background:var(--primary-soft);color:var(--primary-deep);display:flex;align-items:center;justify-content:center;margin-left:auto;flex:none;transition:transform .12s}
+.add-mini:active{transform:scale(.9)}
+.add-mini svg{width:17px;height:17px}
+.meal-item{display:flex;gap:10px;align-items:flex-start;padding:11px 2px;border-bottom:1px dashed var(--border);cursor:pointer}
+.meal-item:last-child{border-bottom:none}
+.mi-time{font-size:11px;font-weight:700;color:var(--text-2);background:var(--card-2);padding:3px 7px;border-radius:7px;margin-top:2px;flex:none;font-variant-numeric:tabular-nums}
+.mi-main{flex:1;min-width:0}
+.mi-content{font-size:14px;font-weight:500;word-break:break-word;line-height:1.5}
+.mi-tags{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.tag{font-size:10.5px;font-weight:700;color:var(--text-2);background:var(--card-2);padding:2.5px 8px;border-radius:999px}
+.mi-del{width:26px;height:26px;border-radius:9px;color:var(--text-3);display:flex;align-items:center;justify-content:center;flex:none;opacity:.75}
+.mi-del svg{width:13px;height:13px}
+.mi-del:active{color:var(--red);background:var(--red-soft)}
+.meal-empty{font-size:12.5px;color:var(--text-3);padding:9px 2px 4px}
+.empty{padding:24px 8px;text-align:center;color:var(--text-3);font-size:13px}
+.empty-emoji{font-size:30px;margin-bottom:8px}
+
+/* weight card */
+.w-card{display:flex;align-items:center;gap:12px}
+.w-ic{width:44px;height:44px;border-radius:14px;background:var(--primary-soft);color:var(--primary-deep);display:flex;align-items:center;justify-content:center;flex:none}
+.w-ic svg{width:22px;height:22px}
+.w-main{flex:1;min-width:0}
+.w-label{font-size:12px;color:var(--text-3);font-weight:600}
+.w-value{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.w-value small{font-size:12px;color:var(--text-3);font-weight:600;margin-left:2px}
+.w-sub{font-size:11.5px;color:var(--text-3);margin-top:1px}
+.bmi-tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;margin-left:8px;vertical-align:3px}
+.bmi-tag.good{background:var(--primary-soft);color:var(--primary-deep)}
+.bmi-tag.amber{background:var(--amber-soft);color:#8A6210}
+.bmi-tag.red{background:var(--red-soft);color:#B23B3B}
+
+/* ============ Bowel ============ */
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat3-item{text-align:center;padding:10px 4px 9px;background:var(--card-2);border-radius:14px}
+.stat3-num{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat3-lab{font-size:11px;color:var(--text-3);margin-top:2px}
+
+/* records list */
+.rec{display:flex;gap:11px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--border);cursor:pointer}
+.rec:first-of-type{padding-top:6px}
+.rec:last-child{border-bottom:none}
+.rec-ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.rec-ic svg{width:19px;height:19px}
+.rec-ic.emoji{font-size:18px}
+.bowels-bg{background:var(--brown-soft);color:var(--brown)}
+.meals-bg{background:var(--amber-soft);color:#B4731F}
+.weights-bg{background:var(--primary-soft);color:var(--primary-deep)}
+.walks-bg{background:var(--blue-soft);color:#2D5FD9}
+.rec-main{flex:1;min-width:0}
+.rec-t{font-size:14px;font-weight:600;word-break:break-word}
+.rec-s{font-size:11.5px;color:var(--text-3);margin-top:2px}
+.rec-del{width:30px;height:30px;border-radius:10px;color:var(--text-3);display:flex;align-items:center;justify-content:center;flex:none}
+.rec-del svg{width:15px;height:15px}
+.rec-del:active{color:var(--red);background:var(--red-soft)}
+
+/* ============ Walk ============ */
+.walk-hero{text-align:center}
+.ring-wrap{position:relative;width:152px;height:152px;margin:10px auto 4px}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-v{font-size:27px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.ring-l{font-size:11px;color:var(--text-3);margin-top:2px}
+.goal-hit{color:var(--primary-deep);font-weight:800;font-size:13.5px;margin-top:4px}
+.goal-sub{color:var(--text-3);font-size:12.5px;margin-top:4px}
+.walk-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stats2x2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ws{background:var(--card-2);border-radius:14px;padding:11px 4px}
+.ws-v{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
+.ws-l{font-size:11px;color:var(--text-3);margin-top:2px}
+
+/* ============ Data page ============ */
+.set-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--border)}
+.set-row.noline{border-bottom:none}
+.set-lab{flex:1;font-size:14px;font-weight:600}
+.set-in{width:150px;height:42px;text-align:right}
+.bmi-card{display:flex;align-items:center;justify-content:space-between;background:var(--card-2);border-radius:14px;padding:12px 14px;margin-top:12px}
+.bmi-v{font-size:13px;font-weight:600;color:var(--text-2)}
+.bmi-v b{font-size:19px;font-weight:800;color:var(--text);margin-left:4px}
+.bmi-s{font-size:11px;color:var(--text-3);margin-top:2px}
+.bmi-badge{font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;flex:none}
+.bmi-badge.good{background:var(--primary-soft);color:var(--primary-deep)}
+.bmi-badge.amber{background:var(--amber-soft);color:#8A6210}
+.bmi-badge.red{background:var(--red-soft);color:#B23B3B}
+.data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.dg{background:var(--card-2);border-radius:14px;padding:11px 2px;text-align:center}
+.dg-e{font-size:18px}
+.dg-v{font-size:16px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}
+.dg-l{font-size:10.5px;color:var(--text-3)}
+.stat-line{text-align:center;font-size:12px;color:var(--text-2)}
+.stat-line b{font-weight:800;color:var(--text)}
+.mg-row{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px dashed var(--border);cursor:pointer}
+.mg-row:last-child{border-bottom:none}
+.mg-row:active{background:var(--card-2);border-radius:12px}
+.mg-ic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--card-2);color:var(--text-2);flex:none}
+.mg-ic svg{width:18px;height:18px}
+.mg-main{flex:1;min-width:0}
+.mg-name{font-size:14px;font-weight:600}
+.mg-sub{font-size:11px;color:var(--text-3);margin-top:1px}
+.mg-row.danger .mg-ic{background:var(--red-soft);color:var(--red)}
+.mg-row.danger .mg-name{color:var(--red)}
+/* ---- 云同步卡片 ---- */
+.sync-ic{width:38px;height:38px;border-radius:12px;background:var(--primary-soft);color:var(--primary-deep);display:flex;align-items:center;justify-content:center}
+.sync-ic svg{width:20px;height:20px}
+.sync-or{text-align:center;color:var(--text-3);font-size:12px;margin:12px 0}
+.sync-bind{display:flex;gap:8px}
+.sync-bind .input{flex:1;min-width:0;text-transform:uppercase;font-weight:600;letter-spacing:.5px}
+.sync-tip{font-size:11.5px;color:var(--text-3);line-height:1.7;margin-top:10px}
+.sync-tip b{color:var(--text-2)}
+.sync-code-row{display:flex;align-items:center;gap:8px;margin:2px 0 10px}
+.sync-code{flex:1;min-width:0;font-weight:800;font-size:15.5px;letter-spacing:1.5px;color:var(--primary-deep);background:var(--primary-soft);border-radius:13px;padding:12px 14px;cursor:pointer;user-select:all;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.sync-dot{width:10px;height:10px;border-radius:50%;background:#C7D2CC;flex:none}
+.sync-dot.ok{background:var(--primary)}
+.sync-dot.syncing{background:var(--amber);animation:sync-pulse 1s ease-in-out infinite}
+.sync-dot.error{background:var(--red)}
+@keyframes sync-pulse{50%{opacity:.3}}
+.sync-status{font-size:12.5px;color:var(--text-2);margin-bottom:12px;min-height:18px}
+.sync-btns{display:flex;gap:8px}
+.sync-btns .btn{flex:1}
+.btn-ghost-danger{background:var(--red-soft);color:var(--red)}
+.mg-arrow{color:var(--text-3);font-size:16px;flex:none}
+
+/* ============ Nav ============ */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+  background:rgba(255,255,255,.93);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:50}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0 5px;border-radius:14px;color:var(--text-3);transition:color .18s,background .18s}
+.nav-item svg{width:23px;height:23px}
+.nav-item span{font-size:10.5px;font-weight:700;letter-spacing:.3px}
+.nav-item.active{color:var(--primary-deep);background:var(--primary-soft)}
+
+/* ============ Bottom sheet ============ */
+.sheet-mask{position:fixed;inset:0;background:rgba(18,26,22,.5);z-index:90;opacity:0;transition:opacity .25s;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.sheet-mask.show{opacity:1}
+.sheet{position:fixed;bottom:0;left:50%;transform:translate(-50%,105%);width:100%;max-width:480px;background:var(--card);
+  border-radius:26px 26px 0 0;z-index:95;transition:transform .32s cubic-bezier(.32,.72,.28,1);
+  display:flex;flex-direction:column;max-height:88vh;box-shadow:0 -8px 40px rgba(0,0,0,.14);
+  padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+.sheet.open{transform:translate(-50%,0)}
+.sheet-handle{width:42px;height:4.5px;border-radius:99px;background:var(--border);margin:10px auto 2px;flex:none}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:8px 18px 4px;flex:none}
+.sheet-title{font-size:17px;font-weight:800}
+.sheet-close{width:32px;height:32px;border-radius:11px;background:var(--card-2);color:var(--text-2);display:flex;align-items:center;justify-content:center}
+.sheet-close svg{width:15px;height:15px}
+.sheet-body{overflow-y:auto;padding:10px 18px 4px;-webkit-overflow-scrolling:touch}
+.sheet-foot{padding:10px 18px 0;flex:none}
+.sheet-hint{font-size:12px;color:var(--text-3);background:var(--card-2);border-radius:12px;padding:9px 12px;margin-bottom:14px;line-height:1.6}
+
+/* form fields */
+.field{margin-bottom:16px}
+.field>label{display:block;font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:8px}
+.input{width:100%;height:46px;border:1.5px solid var(--border);border-radius:14px;padding:0 14px;background:var(--card-2);font-size:16px;transition:border-color .2s,background .2s}
+.input:focus{border-color:var(--primary);outline:none;background:#fff}
+textarea.input{height:auto;padding:12px 14px;min-height:86px;resize:none;line-height:1.6}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:38px;padding:0 15px;border-radius:999px;background:var(--card-2);border:1.5px solid var(--border);font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px;color:var(--text-2);transition:all .15s}
+.chip.on{background:var(--primary-soft);border-color:var(--primary);color:var(--primary-deep)}
+.chip:active{transform:scale(.95)}
+.big-input-wrap{display:flex;align-items:baseline;justify-content:center;gap:6px;background:var(--card-2);border-radius:16px;padding:20px 10px}
+.big-num{font-size:40px;font-weight:800;width:170px;text-align:center;border:none;background:transparent;outline:none;color:var(--text);font-variant-numeric:tabular-nums}
+.big-num::placeholder{color:#C7D2CC}
+.unit{font-size:15px;font-weight:700;color:var(--text-3)}
+
+/* bristol */
+.bristol{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.br-item{border:1.5px solid var(--border);border-radius:15px;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s;background:#fff}
+.br-item.on{border-color:var(--brown);background:var(--brown-soft);box-shadow:0 0 0 3px rgba(160,107,66,.08)}
+.br-glyph{color:#9A6B45;height:24px;display:flex;align-items:center}
+.br-glyph svg{width:44px;height:24px}
+.br-num{font-size:12px;font-weight:800;color:var(--brown)}
+.br-item.on .br-num{color:var(--brown)}
+.br-name{font-size:10.5px;color:var(--text-2);line-height:1.3}
+.br-hint{font-size:12px;color:var(--text-2);background:var(--brown-soft);border-radius:12px;padding:9px 12px;margin-top:6px;line-height:1.6}
+.br-hint b{color:var(--brown)}
+.hint-warn{background:var(--red-soft);color:#B23B3B;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.6;margin-top:10px}
+
+/* dialog */
+.dialog-mask{position:fixed;inset:0;background:rgba(18,26,22,.5);z-index:100;opacity:0;transition:opacity .22s}
+.dialog-mask.show{opacity:1}
+.dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-44%) scale(.94);opacity:0;width:min(80vw,330px);background:#fff;border-radius:22px;padding:20px 18px 16px;z-index:105;transition:all .22s cubic-bezier(.3,.8,.4,1);box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.dialog.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.dlg-title{font-size:16.5px;font-weight:800;text-align:center}
+.dlg-msg{font-size:13.5px;color:var(--text-2);line-height:1.65;text-align:center;margin:8px 0 16px}
+.dlg-btns{display:flex;gap:10px}
+.dlg-btns .btn{flex:1;height:42px;font-size:14px}
+
+/* toast */
+.toast{position:fixed;top:calc(16px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-16px);opacity:0;background:#22312A;color:#fff;padding:10px 20px;border-radius:999px;font-size:13.5px;font-weight:600;z-index:120;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:all .28s cubic-bezier(.3,.8,.4,1);pointer-events:none;max-width:86vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.warn{background:#8A5A10}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <main>
+    <section class="page active" id="page-home"></section>
+    <section class="page" id="page-meals"></section>
+    <section class="page" id="page-bowel"></section>
+    <section class="page" id="page-walk"></section>
+    <section class="page" id="page-data"></section>
+  </main>
+  <nav class="nav" id="nav" aria-label="主导航"></nav>
+</div>
+<div id="sheetRoot"></div>
+<div id="dialogRoot"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+'use strict';
+/* ================= 基础数据层 ================= */
+const KEY='health_diary_v1';
+const DEF_SETTINGS={nickname:'',height:0,stepGoal:8000};
+function loadDB(){
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY));
+    if(d&&typeof d==='object'){
+      return {meals:Array.isArray(d.meals)?d.meals:[],weights:Array.isArray(d.weights)?d.weights:[],
+              bowels:Array.isArray(d.bowels)?d.bowels:[],walks:Array.isArray(d.walks)?d.walks:[],
+              deleted:Array.isArray(d.deleted)?d.deleted:[],
+              settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
+    }
+  }catch(e){}
+  return {meals:[],weights:[],bowels:[],walks:[],deleted:[],settings:Object.assign({},DEF_SETTINGS)};
+}
+let db=loadDB();
+
+/* ================= 云同步（同步码模式） ================= */
+const SYNC_CONF_KEY='health_diary_sync';
+const SYNC_ROOT='https://textdb.dev/api/data/';
+const TYPES=['meals','weights','bowels','walks'];
+let syncConf=null,syncing=false,syncDebTimer=null,syncStatus='ok',syncErrMsg='';
+try{const sc=JSON.parse(localStorage.getItem(SYNC_CONF_KEY));if(sc&&sc.code&&sc.k)syncConf=sc}catch(e){}
+function saveSyncConf(){try{localStorage.setItem(SYNC_CONF_KEY,JSON.stringify(syncConf))}catch(e){}}
+function markDirty(){
+  if(!syncConf||syncing)return;
+  clearTimeout(syncDebTimer);
+  syncDebTimer=setTimeout(()=>syncNow(),2500);
+}
+/* 迁移：为旧记录补 updatedAt（按记录日期时间推导），确保可合并 */
+function recStamp(r){
+  if(!r.updatedAt){
+    const t=String(r.time||'00:00').split(':');
+    r.updatedAt=parseD(r.date).getTime()+(+t[0])*36e5+(+t[1])*6e4;
+  }
+  return r;
+}
+(function migrateDB(){
+  if(!Array.isArray(db.deleted))db.deleted=[];
+  TYPES.forEach(t=>{if(!Array.isArray(db[t]))db[t]=[];db[t].forEach(recStamp)});
+})();
+
+/* ---- 加密工具（Web Crypto, AES-GCM） ---- */
+const b64=u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)};
+const unb64=s=>{const bin=atob(s);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u};
+const te=new TextEncoder();
+async function shaHex(str){
+  const buf=await crypto.subtle.digest('SHA-256',te.encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function deriveKey(code){
+  const base=await crypto.subtle.importKey('raw',te.encode(code),{name:'PBKDF2'},false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:te.encode('health-diary-sync-v1'),iterations:100000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function encDoc(key,obj){
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,te.encode(JSON.stringify(obj)));
+  return {v:1,iv:b64(iv),ct:b64(new Uint8Array(ct))};
+}
+async function decDoc(key,doc){
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(doc.iv)},key,unb64(doc.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+/* ---- 同步码 ---- */
+const CODE_ALPHABET='ABCDEFGHJKMNPQRSTVWXYZ23456789';
+function genCode(){
+  const buf=crypto.getRandomValues(new Uint8Array(16));
+  let s='';for(const b of buf)s+=CODE_ALPHABET[b%CODE_ALPHABET.length];
+  return s;
+}
+const normCode=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const fmtCode=c=>String(c).replace(/(.{4})/g,'$1-').replace(/-$/,'');
+
+/* ---- 同步载荷 / 合并 ---- */
+function buildPayload(){
+  const p={v:1,at:Date.now(),settings:Object.assign({},db.settings),deleted:(db.deleted||[]).map(d=>Object.assign({},d))};
+  TYPES.forEach(t=>{p[t]=(db[t]||[]).map(r=>recStamp(Object.assign({},r)))});
+  return p;
+}
+function canonSettings(s){const o={};Object.keys(s||{}).filter(k=>k!=='updatedAt').sort().forEach(k=>o[k]=s[k]);return JSON.stringify(o)}
+function canon(p){
+  const q={settings:canonSettings(p.settings),deleted:(p.deleted||[]).slice().sort((a,b)=>String(a.id).localeCompare(String(b.id)))};
+  TYPES.forEach(t=>q[t]=(p[t]||[]).map(r=>{const c={};Object.keys(r).filter(k=>k!=='updatedAt').sort().forEach(k=>c[k]=r[k]);return c}).sort((a,b)=>String(a.id).localeCompare(String(b.id))));
+  return JSON.stringify(q);
+}
+function mergePayload(cloud){
+  const delMap=new Map();
+  [...(db.deleted||[]),...(cloud.deleted||[])].forEach(d=>{if(!d||!d.id)return;delMap.set(d.id,Math.max(delMap.get(d.id)||0,+d.at||0))});
+  TYPES.forEach(t=>{
+    const map=new Map();
+    db[t].forEach(r=>{recStamp(r);map.set(r.id,r)});
+    (cloud[t]||[]).forEach(r=>{
+      if(!r||!r.id)return;recStamp(r);
+      const cur=map.get(r.id);
+      if(!cur)map.set(r.id,Object.assign({},r));
+      else if((r.updatedAt||0)>(cur.updatedAt||0))map.set(r.id,Object.assign({},r));
+    });
+    db[t]=[...map.values()].filter(r=>{const at=delMap.get(r.id);return !(at&&(r.updatedAt||0)<=at)});
+  });
+  const cs=cloud.settings;
+  if(cs&&(cs.updatedAt||0)>(db.settings.updatedAt||0)&&canonSettings(cs)!==canonSettings(db.settings)){
+    db.settings=Object.assign({},DEF_SETTINGS,cs);
+  }
+  db.deleted=[...delMap.entries()].map(([id,at])=>({id,at})).sort((a,b)=>a.at-b.at).slice(-400);
+}
+/* ---- 同步主流程 ---- */
+async function syncNow(manual){
+  if(!syncConf){return}
+  if(syncing){if(manual)toast('正在同步中…');return}
+  if(!(window.crypto&&crypto.subtle)){setSyncStatus('nocrypto');if(manual)toast('当前环境不支持加密，无法同步','warn');return}
+  syncing=true;setSyncStatus('syncing');
+  try{
+    const key=await deriveKey(syncConf.code);
+    const url=SYNC_ROOT+syncConf.k;
+    let raw=null;
+    const res=await fetch(url,{cache:'no-store'});
+    if(res.ok)raw=await res.text();
+    else if(res.status!==404)throw new Error('网络异常（'+res.status+'）');
+    let cloud=null;
+    if(raw){
+      let doc=null;try{doc=JSON.parse(raw)}catch(e){}
+      if(doc&&doc.v===1&&doc.ct&&doc.iv){
+        try{cloud=await decDoc(key,doc)}
+        catch(e){setSyncStatus('codeerr');if(manual)toast('同步码不匹配，云端数据无法解密','warn');syncing=false;refreshSyncUI();return}
+      }
+    }
+    const before=canon(buildPayload());
+    if(cloud)mergePayload(cloud);
+    const afterP=buildPayload();
+    const after=canon(afterP);
+    if(after!==before){save();render(cur)}
+    if(!cloud||after!==canon(cloud)){
+      const doc=await encDoc(key,afterP);
+      const pr=await fetch(url,{method:'POST',headers:{'content-type':'text/plain'},body:JSON.stringify(doc)});
+      if(!pr.ok)throw new Error('推送失败（'+pr.status+'）');
+    }
+    syncConf.lastSync=Date.now();saveSyncConf();
+    setSyncStatus('ok');
+    if(manual)toast('已同步 ✓');
+  }catch(e){
+    syncErrMsg=(e&&e.message)||'同步失败';
+    setSyncStatus('error');
+    if(manual)toast('同步失败：'+syncErrMsg,'warn');
+  }finally{
+    syncing=false;refreshSyncUI();
+  }
+}
+function setSyncStatus(s){syncStatus=s;refreshSyncUI()}
+function fmtSyncTime(ts){
+  if(!ts)return '尚未同步';
+  const d=Date.now()-ts;
+  if(d<60e3)return '刚刚';
+  if(d<3600e3)return Math.floor(d/60e3)+' 分钟前';
+  const t=new Date(ts);return pad(t.getHours())+':'+pad(t.getMinutes());
+}
+function syncStatusHTML(){
+  if(!syncConf)return '';
+  if(syncStatus==='syncing')return '⟳ 正在同步…';
+  if(syncStatus==='error')return '⚠ 同步失败：'+syncErrMsg+'，稍后自动重试';
+  if(syncStatus==='codeerr')return '⚠ 同步码不匹配，云端数据无法解密';
+  if(syncStatus==='nocrypto')return '⚠ 当前环境不支持加密';
+  return '✓ 已同步 · '+fmtSyncTime(syncConf.lastSync);
+}
+function refreshSyncUI(){
+  const dot=$('#syncDot'),txt=$('#syncStatusText');
+  if(!dot||!txt||!syncConf)return;
+  dot.className='sync-dot '+(syncStatus==='ok'?'ok':syncStatus==='syncing'?'syncing':'error');
+  txt.innerHTML=syncStatusHTML();
+}
+/* ---- 同步操作 ---- */
+function syncGen(){
+  (async()=>{
+    const code=genCode();
+    syncConf={code,k:await shaHex(code),lastSync:0};
+    saveSyncConf();
+    renderData();
+    toast('同步码已生成，正在上传加密数据…');
+    syncNow();
+  })();
+}
+async function syncBind(){
+  const input=$('#syncCodeInput');
+  const code=normCode(input&&input.value);
+  if(code.length!==16){toast('同步码格式不对：16 位字符（输入时横杠可省略）','warn');return}
+  if(!window.fetch){toast('此环境不支持网络请求','warn');return}
+  try{
+    const k=await shaHex(code);
+    let doc=null;
+    const res=await fetch(SYNC_ROOT+k,{cache:'no-store'});
+    if(res.ok){try{doc=JSON.parse(await res.text())}catch(e){}}
+    if(doc&&doc.ct&&doc.iv){
+      try{await decDoc(await deriveKey(code),doc)}
+      catch(e){toast('同步码不正确：无法解密云端数据','warn');return}
+    }
+    syncConf={code,k,lastSync:0};
+    saveSyncConf();
+    renderData();
+    toast(doc?'绑定成功，正在拉取云端数据':'云端暂无数据，将把本机数据上传');
+    syncNow();
+  }catch(e){toast('无法连接同步服务，请稍后再试','warn')}
+}
+function copyText(t){
+  return new Promise(resolve=>{
+    const done=()=>resolve(true);
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,()=>fallback())}
+    else fallback();
+    function fallback(){
+      const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy')}catch(e){}
+      ta.remove();done();
+    }
+  });
+}
+function copySyncCode(){
+  if(!syncConf)return;
+  copyText(fmtCode(syncConf.code)).then(()=>toast('同步码已复制，请在其他设备粘贴绑定'));
+}
+function syncRotate(){
+  if(!syncConf)return;
+  confirmDialog({title:'更换同步码',msg:'将生成新同步码并重新上传全部数据，旧同步码的云端数据会被清空。其他设备需要用新码重新绑定。',okText:'换新码',
+    onOk:(async()=>{
+      const old=syncConf;
+      const code=genCode();
+      syncConf={code,k:await shaHex(code),lastSync:0};
+      saveSyncConf();
+      await syncNow();
+      try{await fetch(SYNC_ROOT+old.k,{method:'POST',headers:{'content-type':'text/plain'},body:' '})}catch(e){}
+      renderData();
+      toast('已更换同步码，记得在其他设备重新绑定');
+    })});
+}
+function syncOff(){
+  if(!syncConf)return;
+  confirmDialog({title:'关闭云同步',msg:'将清空云端加密数据并停止自动同步，本机数据不受任何影响。',okText:'关闭',danger:true,
+    onOk:(async()=>{
+      try{await fetch(SYNC_ROOT+syncConf.k,{method:'POST',headers:{'content-type':'text/plain'},body:' '})}catch(e){}
+      syncConf=null;localStorage.removeItem(SYNC_CONF_KEY);
+      renderData();
+      toast('云同步已关闭');
+    })});
+}
+function syncCardHTML(){
+  if(!syncConf)return `<div class="card" id="syncCard">
+      <div class="card-h"><div><div class="card-t">云同步</div><div class="card-s">多设备自动同步 · 加密中转 · 无需注册</div></div><div class="sync-ic">${ic('cloud')}</div></div>
+      <button type="button" class="btn btn-primary btn-block" data-act="sync-gen" style="margin-top:4px">生成同步码，开启同步</button>
+      <div class="sync-or">— 或 —</div>
+      <div class="sync-bind">
+        <input class="input sync-in" id="syncCodeInput" placeholder="输入已有同步码" maxlength="19" autocomplete="off" spellcheck="false">
+        <button type="button" class="btn btn-ghost" data-act="sync-bind" style="flex:none;height:46px">绑定</button>
+      </div>
+      <div class="sync-tip">在第一台设备点上方按钮生成同步码；手机、公司电脑等其他设备输入同一个码即可同步。<b>云端只保存密文</b>，服务商无法读取内容。</div>
+    </div>`;
+  return `<div class="card" id="syncCard">
+      <div class="card-h"><div><div class="card-t">云同步</div><div class="card-s">数据加密后中转，服务商无法读取</div></div><span class="sync-dot ${syncStatus==='ok'?'ok':syncStatus==='syncing'?'syncing':'error'}" id="syncDot"></span></div>
+      <div class="sync-code-row">
+        <div class="sync-code" id="syncCodeText" title="点击复制">${fmtCode(syncConf.code)}</div>
+        <button type="button" class="btn btn-ghost sm" data-act="sync-copy">复制</button>
+      </div>
+      <div class="sync-status" id="syncStatusText">${syncStatusHTML()}</div>
+      <div class="sync-btns">
+        <button type="button" class="btn btn-primary sm" data-act="sync-now">立即同步</button>
+        <button type="button" class="btn btn-ghost sm" data-act="sync-rotate">换新码</button>
+        <button type="button" class="btn btn-ghost sm btn-ghost-danger" data-act="sync-off">关闭</button>
+      </div>
+      <div class="sync-tip">同步码 = 你的钥匙，请妥善保管。保存或修改记录后会自动同步；打开应用时自动拉取最新。</div>
+    </div>`;
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&syncConf&&Date.now()-(syncConf.lastSync||0)>30000)syncNow();
+});
+setInterval(()=>{if(syncConf&&(syncStatus==='error')&&!syncing)syncNow()},60000);
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){console.warn('存储不可用',e)}markDirty()}
+
+const $=(s,el=document)=>el.querySelector(s);
+const $$=(s,el=document)=>[...el.querySelectorAll(s)];
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2));
+const pad=n=>String(n).padStart(2,'0');
+const fmtD=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const todayStr=()=>fmtD(new Date());
+const nowHM=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
+const parseD=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=parseD(s);d.setDate(d.getDate()+n);return fmtD(d)};
+const daysSince=s=>Math.round((parseD(todayStr())-parseD(s))/864e5);
+const lastNDays=(n,end=todayStr())=>{const out=[];let d=end;for(let i=0;i<n;i++){out.unshift(d);d=addDays(d,-1)}return out};
+const shortD=s=>{const d=parseD(s);return (d.getMonth()+1)+'/'+d.getDate()};
+const weekdayCn=s=>'日一二三四五六'[parseD(s).getDay()];
+function dateLabel(s){
+  const t=todayStr();
+  if(s===t)return '今天';if(s===addDays(t,-1))return '昨天';if(s===addDays(t,1))return '明天';
+  const d=parseD(s);return `${d.getMonth()+1}月${d.getDate()}日 周${weekdayCn(s)}`;
+}
+const fmt1=v=>(+v).toFixed(1);
+const shortNum=v=>{v=Math.round(v);return v>=10000?(v/10000).toFixed(1).replace(/\.0$/,'')+'万':String(v)};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const byDate=(arr,ds)=>arr.filter(x=>x.date===ds);
+function lastRecord(arr){let best=null;for(const r of arr){if(!best||r.date>best.date||(r.date===best.date&&(r.time||'')>(best.time||'')))best=r}return best}
+function findById(type,id){return db[type].find(r=>r.id===id)}
+function removeRecord(type,id){
+  const r=findById(type,id);
+  if(r&&!r.updatedAt)r.updatedAt=Date.now();
+  db.deleted.push({id,at:Date.now()});
+  if(db.deleted.length>500)db.deleted=db.deleted.slice(-400);
+  db[type]=db[type].filter(x=>x.id!==id);
+}
+function recordDays(){const s=new Set();['meals','weights','bowels','walks'].forEach(t=>db[t].forEach(r=>s.add(r.date)));return s.size}
+
+/* ================= 常量表 ================= */
+const MEALS=[
+  {k:'breakfast',name:'早餐',icon:'🌅',hint:'建议 7:00 – 9:00'},
+  {k:'lunch',name:'午餐',icon:'☀️',hint:'建议 11:30 – 13:30'},
+  {k:'dinner',name:'晚餐',icon:'🌙',hint:'建议 18:00 – 20:00'},
+  {k:'snack',name:'加餐 / 零食',icon:'🫖',hint:'水果、坚果、饮品等'},
+];
+const MEAL_NAME=k=>{const m=MEALS.find(x=>x.k===k);return m?m.name:'饮食'};
+const SATISFY=[{v:2,name:'很满足',emoji:'😋'},{v:1,name:'刚好',emoji:'🙂'},{v:0,name:'没吃好',emoji:'😐'}];
+const BRISTOL=[
+  {n:1,name:'硬球状',desc:'一颗颗硬球，排便费力'},
+  {n:2,name:'块状腊肠',desc:'结块成条，表面粗糙'},
+  {n:3,name:'裂纹腊肠',desc:'成形但有裂纹，尚理想'},
+  {n:4,name:'光滑腊肠',desc:'表面光滑柔软，最理想'},
+  {n:5,name:'软团块',desc:'边缘清晰的柔软团块'},
+  {n:6,name:'糊状',desc:'边缘模糊，质地偏稀'},
+  {n:7,name:'水状',desc:'完全液体，无固体块'},
+];
+const EASE={easy:'轻松',normal:'一般',hard:'费力'};
+const BCOLOR=[{v:'棕黄'},{v:'深棕'},{v:'墨绿'},{v:'黑色',warn:1},{v:'红色',warn:1}];
+const TYPE_META={meals:{name:'三餐',icon:'🍚'},weights:{name:'体重',icon:'⚖️'},bowels:{name:'排便',icon:'💩'},walks:{name:'步行',icon:'🚶'}};
+
+/* ================= SVG 图标 ================= */
+const I={
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.4 12 3.8l8 6.6"/><path d="M5.8 9.4V19.4c0 .4.3.7.7.7h11c.4 0 .7-.3.7-.7V9.4"/><path d="M9.8 20.1v-5h4.4v5"/></svg>',
+meal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 11.8h16.8c0 4.6-3.8 8.4-8.4 8.4s-8.4-3.8-8.4-8.4z"/><path d="M9.2 8.7c.4-1 .4-1.9 0-2.9"/><path d="M14.8 8.7c.4-1 .4-1.9 0-2.9"/></svg>',
+poop:'<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="17" rx="7" ry="4.2"/><ellipse cx="12" cy="11.9" rx="5.2" ry="3.2"/><ellipse cx="12" cy="7.6" rx="3.3" ry="2.1"/><path d="M12.3 5.7c-.1-1.6.8-2.5 2-2.9.1 1.5-.6 2.4-2 2.9z"/></svg>',
+walk:'<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="8" cy="7.4" rx="2.7" ry="4.3" transform="rotate(-12 8 7.4)"/><ellipse cx="16" cy="16.8" rx="2.7" ry="4.3" transform="rotate(-12 16 16.8)"/></svg>',
+data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9.3" cy="7" r="2.3" fill="#fff"/><circle cx="15.4" cy="12" r="2.3" fill="#fff"/><circle cx="8" cy="17" r="2.3" fill="#fff"/></svg>',
+scale:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.6" width="16" height="15" rx="3.6"/><circle cx="12" cy="13.4" r="3.5"/><path d="M12 13.4l2.2-3.3"/></svg>',
+check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.6 9.4 17.5 19.5 6.8"/></svg>',
+plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></svg>',
+chevL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>',
+x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9.5 7V5c0-.5.4-1 1-1h3c.6 0 1 .5 1 1v2"/><path d="M6.5 7l.7 12.3c0 .5.4.9.9.9h7.8c.5 0 .9-.4.9-.9L17.5 7"/><path d="M10 11v6M14 11v6"/></svg>',
+download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10.5"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19.5h14"/></svg>',
+upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4.5"/><path d="M7.5 9 12 4.5 16.5 9"/><path d="M5 19.5h14"/></svg>',
+warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8 2.9 19.2c-.3.5 0 1.1.6 1.1h17c.6 0 .9-.6.6-1.1L12 3.8z"/><path d="M12 10v4.6"/><circle cx="12" cy="17.6" r=".7" fill="currentColor" stroke="none"/></svg>',
+spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.7 4.9 4.9 1.7-4.9 1.7L12 16.2l-1.7-4.9-4.9-1.7 4.9-1.7L12 3z"/><circle cx="18.6" cy="17.6" r="1.6"/><circle cx="6.2" cy="19.2" r="1.1"/></svg>',
+cloud:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.2 18.5h9.3a4 4 0 0 0 .6-7.9 5.5 5.5 0 0 0-10.6-1.1 4.4 4.4 0 0 0 .7 9z"/></svg>',
+};
+const ic=n=>I[n];
+function bristolGlyph(n){
+  const f='fill="currentColor"';
+  switch(n){
+    case 1:return '<svg viewBox="0 0 44 24"><circle cx="7" cy="9" r="4" '+f+'/><circle cx="17" cy="15" r="4.2" '+f+'/><circle cx="28" cy="8" r="3.8" '+f+'/><circle cx="37" cy="15" r="3.4" '+f+'/></svg>';
+    case 2:return '<svg viewBox="0 0 44 24"><circle cx="12" cy="12" r="6" '+f+'/><circle cx="22" cy="12" r="6.5" '+f+'/><circle cx="32" cy="12" r="5.5" '+f+'/></svg>';
+    case 3:return '<svg viewBox="0 0 44 24"><rect x="6" y="8" width="32" height="9.5" rx="4.75" '+f+'/><path d="M14 8v9.5M22 8v9.5M30 8v9.5" stroke="#fff" stroke-width="1.4" opacity=".5"/></svg>';
+    case 4:return '<svg viewBox="0 0 44 24"><rect x="6" y="7.5" width="32" height="10" rx="5" '+f+'/></svg>';
+    case 5:return '<svg viewBox="0 0 44 24"><ellipse cx="13" cy="12" rx="7.5" ry="6" '+f+'/><ellipse cx="30" cy="13" rx="6.5" ry="5" '+f+'/></svg>';
+    case 6:return '<svg viewBox="0 0 44 24"><ellipse cx="15" cy="14" rx="7" ry="5.5" '+f+'/><ellipse cx="23" cy="10" rx="6" ry="4.6" '+f+'/><ellipse cx="31" cy="15" rx="6.5" ry="4.8" '+f+'/></svg>';
+    default:return '<svg viewBox="0 0 44 24"><ellipse cx="22" cy="14" rx="15" ry="4.5" '+f+'/><circle cx="9" cy="7" r="2" '+f+'/><circle cx="35" cy="6" r="1.8" '+f+'/><circle cx="28" cy="7" r="1.4" '+f+'/></svg>';
+  }
+}
+
+/* ================= 业务计算 ================= */
+function weightsSorted(){return [...db.weights].sort((a,b)=>(a.date+(a.time||'00:00')).localeCompare(b.date+(b.time||'00:00')))}
+function latestWeight(){const s=weightsSorted();return s.length?s[s.length-1]:null}
+function prevWeightRec(){const s=weightsSorted();return s.length>1?s[s.length-2]:null}
+const dailySteps=ds=>byDate(db.walks,ds).reduce((a,b)=>a+(+b.steps||0),0);
+function weightSeries(limit=7){
+  const m=new Map();weightsSorted().forEach(w=>m.set(w.date,w.value));
+  return [...m.entries()].slice(-limit).map(([d,v])=>({label:shortD(d),value:v}));
+}
+function bmiInfo(){
+  const h=+db.settings.height,w=latestWeight();
+  if(!h||!w)return null;
+  const b=w.value/((h/100)**2);
+  let s,c;
+  if(b<18.5){s='偏瘦';c='amber'}else if(b<24){s='正常';c='good'}else if(b<28){s='超重';c='amber'}else{s='肥胖';c='red'}
+  return {v:+b.toFixed(1),s,c};
+}
+const kcalOf=steps=>{const w=latestWeight();const kg=w?w.value:65;return Math.round(steps*0.04*kg/65)};
+const autoKm=steps=>{const h=+db.settings.height;const stride=h?h*0.415/100:0.7;return +(steps*stride/1000).toFixed(2)};
+function guessMealType(){const h=new Date().getHours();if(h<10)return 'breakfast';if(h<14)return 'lunch';if(h<17)return 'snack';if(h<21)return 'dinner';return 'snack'}
+const easeName=v=>EASE[v]||'一般';
+
+/* ================= 图表 ================= */
+let _gid=0;
+function svgLine(items,opt){
+  const color=(opt&&opt.color)||'#0E9F6E';
+  const W=340,H=148,L=14,R=40,T=18,B=26;
+  const n=items.length;
+  if(n===0)return '<div class="chart-empty">记录体重后这里会显示趋势</div>';
+  const vals=items.map(i=>i.value);
+  let mn=Math.min(...vals),mx=Math.max(...vals);
+  if(mn===mx){mn-=1;mx+=1}
+  const p=(mx-mn)*.15;mn-=p;mx+=p;
+  const iw=W-L-R,ih=H-T-B;
+  const X=i=>n===1?L+iw/2:L+iw*i/(n-1);
+  const Y=v=>T+ih*(1-(v-mn)/(mx-mn));
+  const lineD=items.map((it,i)=>(i?'L':'')+X(i).toFixed(1)+' '+Y(it.value).toFixed(1)).join(' ');
+  const areaD=lineD+` L${X(n-1).toFixed(1)} ${(T+ih).toFixed(1)} L${X(0).toFixed(1)} ${(T+ih).toFixed(1)} Z`;
+  const id='lg'+(++_gid);
+  const dots=items.map((it,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(it.value).toFixed(1)}" r="3.2" fill="#fff" stroke="${color}" stroke-width="2"/>`).join('');
+  const labels=items.map((it,i)=>{
+    const showX=n<=7||i===0||i===n-1;
+    const showV=n<=5||i===0||i===n-1;
+    let s='';
+    if(showX)s+=`<text x="${X(i).toFixed(1)}" y="${H-7}" font-size="9" fill="#98A5A0" text-anchor="middle">${items[i].label}</text>`;
+    if(showV){const y=Y(it.value);const above=y>28;s+=`<text x="${X(i).toFixed(1)}" y="${(above?y-9:y+17).toFixed(1)}" font-size="10.5" font-weight="700" fill="#5C6A63" text-anchor="middle">${fmt1(it.value)}</text>`}
+    return s;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".20"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${areaD}" fill="url(#${id})"/>
+    <path d="${lineD}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}${labels}</svg>`;
+}
+function svgBars(items,opt){
+  const color=(opt&&opt.color)||'#3E7CFA';
+  const goal=(opt&&opt.goal)||0;
+  const W=340,H=148,T=20,B=24,L=4,R=4;
+  const mx=Math.max(goal,...items.map(i=>i.value),1)*1.18;
+  const ih=H-T-B;
+  const slot=(W-L-R)/items.length;
+  const bw=Math.min(26,slot*.52);
+  let bars='',vLbl='',xLbl='';
+  items.forEach((it,i)=>{
+    const x=L+slot*i+(slot-bw)/2;
+    const h=Math.max(it.value>0?4:2,ih*it.value/mx);
+    const y=T+ih-h;
+    bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="${Math.min(6,bw/2).toFixed(1)}" fill="${color}" fill-opacity="${it.today?1:.28}"/>`;
+    if(it.value>0)vLbl+=`<text x="${(x+bw/2).toFixed(1)}" y="${(y-5).toFixed(1)}" font-size="9" font-weight="${it.today?700:500}" fill="${it.today?color:'#98A5A0'}" text-anchor="middle">${shortNum(it.value)}</text>`;
+    xLbl+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-7}" font-size="9" font-weight="${it.today?700:400}" fill="${it.today?color:'#98A5A0'}" text-anchor="middle">${it.label}</text>`;
+  });
+  let goalLine='';
+  if(goal>0&&goal<=mx){
+    const gy=T+ih*(1-goal/mx);
+    goalLine=`<path d="M${L} ${gy.toFixed(1)} H${W-R}" stroke="#E8962A" stroke-width="1.4" stroke-dasharray="5 4"/><text x="${W-R-2}" y="${(gy-5).toFixed(1)}" font-size="8.5" fill="#E8962A" text-anchor="end" font-weight="600">目标 ${shortNum(goal)}</text>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${bars}${goalLine}${vLbl}${xLbl}</svg>`;
+}
+function svgRing(pct,opt){
+  opt=opt||{};
+  const size=opt.size||152,stroke=opt.stroke||12,color=opt.color||'#3E7CFA',track=opt.track||'#E8EFFD';
+  pct=Math.max(0,Math.min(1,pct));
+  const r=(size-stroke)/2-2,c=2*Math.PI*r;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${track}" stroke-width="${stroke}"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"
+      stroke-dasharray="${(c*pct).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/>
+  </svg>`;
+}
+
+/* ================= Sheet / Dialog / Toast ================= */
+const sheetRoot=$('#sheetRoot'),dialogRoot=$('#dialogRoot');
+let sheetSubmit=null;
+function openSheet(o){
+  sheetRoot.innerHTML=`
+  <div class="sheet-mask" id="sheetMask"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="${o.title}">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><div class="sheet-title">${o.title}</div>
+      <button type="button" class="sheet-close" id="sheetClose" aria-label="关闭">${ic('x')}</button></div>
+    <form class="sheet-body" id="sheetForm" novalidate>${o.html}</form>
+    <div class="sheet-foot"><button type="submit" form="sheetForm" class="btn btn-primary btn-block" style="margin-bottom:2px">${o.submitText||'保存'}</button></div>
+  </div>`;
+  sheetSubmit=o.onSubmit;
+  document.body.classList.add('locked');
+  requestAnimationFrame(()=>{const m=$('#sheetMask'),s=$('#sheet');if(m)m.classList.add('show');if(s)s.classList.add('open')});
+  $('#sheetMask').addEventListener('click',closeSheet);
+  $('#sheetClose').addEventListener('click',closeSheet);
+  $('#sheetForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(sheetSubmit()!==false)closeSheet();
+  });
+  document.addEventListener('keydown',escClose);
+}
+function escClose(e){if(e.key==='Escape')closeSheet()}
+function closeSheet(){
+  const m=$('#sheetMask'),s=$('#sheet');
+  if(!s)return;
+  if(m)m.classList.remove('show');
+  s.classList.remove('open');
+  document.body.classList.remove('locked');
+  document.removeEventListener('keydown',escClose);
+  setTimeout(()=>{sheetRoot.innerHTML=''},300);
+}
+function confirmDialog(o){
+  dialogRoot.innerHTML=`
+  <div class="dialog-mask" id="dlgMask"></div>
+  <div class="dialog" id="dlg" role="alertdialog" aria-modal="true">
+    <div class="dlg-title">${o.title||'确认操作'}</div>
+    <div class="dlg-msg">${o.msg}</div>
+    <div class="dlg-btns">
+      <button type="button" class="btn btn-ghost" id="dlgNo">取消</button>
+      <button type="button" class="btn ${o.danger?'btn-danger':'btn-primary'}" id="dlgYes">${o.okText||'确定'}</button>
+    </div>
+  </div>`;
+  requestAnimationFrame(()=>{const m=$('#dlgMask'),d=$('#dlg');if(m)m.classList.add('show');if(d)d.classList.add('show')});
+  const off=()=>{dialogRoot.innerHTML=''};
+  $('#dlgNo').addEventListener('click',off);
+  $('#dlgMask').addEventListener('click',off);
+  $('#dlgYes').addEventListener('click',()=>{off();if(o.onOk)o.onOk()});
+}
+let toastTimer=null;
+function toast(msg,type){
+  const t=$('#toast');
+  t.textContent=msg;
+  t.className='toast show'+(type==='warn'?' warn':'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2000);
+}
+function activeVal(sel){
+  const c=$(sel+' .chip.on, '+sel+' .br-item.on');
+  return c?c.dataset.v:null;
+}
+
+/* ================= 各记录 Sheet ================= */
+function openMealSheet(entry,date,forceType){
+  const isEdit=!!entry;
+  const d=isEdit?entry.date:(date||view.meals);
+  const type=isEdit?entry.type:(forceType||guessMealType());
+  const satis=isEdit?(entry.satis==null?1:entry.satis):1;
+  openSheet({
+    title:isEdit?'编辑饮食记录':'记一笔饮食',
+    html:`
+      <div class="field"><label>餐别</label><div class="chips" id="mType">${MEALS.map(m=>`<button type="button" class="chip ${m.k===type?'on':''}" data-v="${m.k}">${m.icon} ${m.name}</button>`).join('')}</div></div>
+      <div class="field"><label>时间</label><input type="time" class="input" id="mTime" value="${isEdit?entry.time:nowHM()}"></div>
+      <div class="field"><label>吃了什么</label><textarea class="input" id="mContent" placeholder="例如：鸡蛋、牛奶、全麦面包">${isEdit?esc(entry.content):''}</textarea></div>
+      <div class="row2"><div class="field"><label>热量估算（千卡）</label><input type="number" inputmode="decimal" class="input" id="mCal" min="0" max="5000" placeholder="选填" value="${isEdit&&entry.cal?entry.cal:''}"></div></div>
+      <div class="field"><label>吃得如何</label><div class="chips" id="mSat">${SATISFY.map(s=>`<button type="button" class="chip ${s.v===satis?'on':''}" data-v="${s.v}">${s.emoji} ${s.name}</button>`).join('')}</div></div>`,
+    onSubmit(){
+      const content=$('#mContent').value.trim();
+      if(!content){toast('先写下吃了什么吧','warn');return false}
+      const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),
+        type:activeVal('#mType')||type,
+        time:$('#mTime').value||nowHM(),
+        content,
+        cal:+$('#mCal').value||0,
+        satis:+(activeVal('#mSat')!=null?activeVal('#mSat'):satis)};
+      if(isEdit)Object.assign(entry,rec);else db.meals.push(rec);
+      save();render(cur);
+      toast(isEdit?'已更新':'记好这一餐了');
+    }
+  });
+}
+function openWeightSheet(entry,date){
+  const isEdit=!!entry;
+  const d=isEdit?entry.date:(date||view.meals);
+  const todayHint=(!isEdit&&d===todayStr()&&byDate(db.weights,d).length)
+    ?'<div class="sheet-hint">今天已经记录过体重，再记一次也没问题（一天内取最后一次）。</div>':'';
+  openSheet({
+    title:isEdit?'编辑体重':'记录体重',
+    html:`${todayHint}
+      <div class="field"><label>体重</label><div class="big-input-wrap">
+        <input type="number" step="0.1" inputmode="decimal" class="big-num" id="wVal" placeholder="0.0" value="${isEdit?entry.value:''}"><span class="unit">kg</span>
+      </div></div>
+      <div class="row2">
+        <div class="field"><label>时间</label><input type="time" class="input" id="wTime" value="${isEdit?entry.time:nowHM()}"></div>
+        <div class="field"><label>备注</label><input class="input" id="wNote" maxlength="30" placeholder="选填" value="${isEdit?esc(entry.note||''):''}"></div>
+      </div>`,
+    onSubmit(){
+      const v=+$('#wVal').value;
+      if(!(v>=20&&v<=500)){toast('体重请在 20 – 500 kg 之间','warn');return false}
+      const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),time:$('#wTime').value||nowHM(),value:+v.toFixed(1),note:$('#wNote').value.trim()};
+      if(isEdit)Object.assign(entry,rec);else db.weights.push(rec);
+      save();render(cur);
+      toast(isEdit?'已更新':'体重已记录');
+    }
+  });
+}
+function bristolHint(n){
+  const b=BRISTOL[n-1];
+  return `<b>${n} 型 · ${b.name}</b> — ${b.desc}${(n===3||n===4)?' ✨ 理想形态':''}`;
+}
+function openBowelSheet(entry,date){
+  const isEdit=!!entry;
+  const d=isEdit?entry.date:(date||view.bowel);
+  const br=isEdit?entry.bristol:4;
+  const ease=isEdit?(entry.ease||'normal'):'normal';
+  const color=isEdit?(entry.color||'棕黄'):'棕黄';
+  openSheet({
+    title:isEdit?'编辑排便记录':'记录排便',
+    html:`
+      <div class="field"><label>时间</label><input type="time" class="input" id="bTime" value="${isEdit?entry.time:nowHM()}"></div>
+      <div class="field"><label>形状（布里斯托分型）</label>
+        <div class="bristol" id="bType">${BRISTOL.map(b=>`<button type="button" class="br-item ${b.n===br?'on':''}" data-v="${b.n}"><div class="br-glyph">${bristolGlyph(b.n)}</div><div class="br-num">${b.n}型</div><div class="br-name">${b.name}</div></button>`).join('')}</div>
+        <div class="br-hint" id="brHint">${bristolHint(br)}</div>
+      </div>
+      <div class="field"><label>过程顺畅吗</label><div class="chips" id="bEase">${Object.entries(EASE).map(([k,n])=>`<button type="button" class="chip ${k===ease?'on':''}" data-v="${k}">${n}</button>`).join('')}</div></div>
+      <div class="field"><label>颜色</label><div class="chips" id="bColor">${BCOLOR.map(c=>`<button type="button" class="chip ${c.v===color?'on':''}" data-v="${c.v}">${c.v}</button>`).join('')}</div>
+        <div class="hint-warn" id="bWarn" hidden>黑色或红色可能与消化道出血相关，若持续出现或伴随不适，建议尽快咨询医生。</div>
+      </div>
+      <div class="field"><label>备注</label><input class="input" id="bNote" maxlength="50" placeholder="选填" value="${isEdit?esc(entry.note||''):''}"></div>`,
+    onSubmit(){
+      const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),
+        time:$('#bTime').value||nowHM(),
+        bristol:+(activeVal('#bType')||br),
+        ease:activeVal('#bEase')||ease,
+        color:activeVal('#bColor')||color,
+        note:$('#bNote').value.trim()};
+      if(isEdit)Object.assign(entry,rec);else db.bowels.push(rec);
+      save();render(cur);
+      toast(isEdit?'已更新':'已记录');
+    }
+  });
+}
+function openWalkSheet(entry,date){
+  const isEdit=!!entry;
+  const d=isEdit?entry.date:(date||view.walk);
+  openSheet({
+    title:isEdit?'编辑步行记录':'记录步行',
+    html:`
+      <div class="field"><label>走了多少步</label><div class="big-input-wrap">
+        <input type="number" inputmode="numeric" class="big-num" id="wSteps" placeholder="0" value="${isEdit?entry.steps:''}"><span class="unit">步</span>
+      </div></div>
+      <div class="row2">
+        <div class="field"><label>时长（分钟）</label><input type="number" inputmode="numeric" class="input" id="wMins" min="0" max="600" placeholder="选填" value="${isEdit&&entry.mins?entry.mins:''}"></div>
+        <div class="field"><label>距离（公里）</label><input type="number" inputmode="decimal" class="input" id="wKm" min="0" step="0.1" placeholder="自动估算" value="${isEdit&&entry.km?entry.km:''}" ${isEdit?'data-auto="0"':'data-auto="1"'}></div>
+      </div>
+      <div class="field"><label>备注</label><input class="input" id="wNote" maxlength="30" placeholder="选填" value="${isEdit?esc(entry.note||''):''}"></div>`,
+    onSubmit(){
+      const steps=Math.round(+$('#wSteps').value);
+      if(!(steps>=1)){toast('步数要大于 0 哦','warn');return false}
+      if(steps>200000){toast('步数好像太多了','warn');return false}
+      const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),time:nowHM(),
+        steps,mins:+$('#wMins').value||0,
+        km:+(+$('#wKm').value||autoKm(steps)).toFixed(1),
+        note:$('#wNote').value.trim()};
+      if(isEdit){rec.time=entry.time||nowHM();Object.assign(entry,rec)}else db.walks.push(rec);
+      save();render(cur);
+      toast(isEdit?'已更新':'走路记录已保存');
+    }
+  });
+}
+
+/* ================= 页面渲染 ================= */
+let cur='home';
+const view={meals:todayStr(),bowel:todayStr(),walk:todayStr()};
+const state={browse:'all'};
+
+function go(page){
+  cur=page;
+  $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  $$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));
+  window.scrollTo(0,0);
+  render(page);
+}
+function render(page){
+  if(page==='home')renderHome();
+  else if(page==='meals')renderMeals();
+  else if(page==='bowel')renderBowel();
+  else if(page==='walk')renderWalk();
+  else renderData();
+}
+function dateNav(page){
+  const d=view[page],t=todayStr();
+  const isToday=d===t;
+  return `<div class="dnav">
+    <button type="button" class="dnav-btn" data-act="nav-date" data-page="${page}" data-delta="-1" aria-label="前一天">${ic('chevL')}</button>
+    ${isToday?`<span class="dnav-label">${dateLabel(d)}</span>`:`<button type="button" class="dnav-label ghost" data-act="goto-today" data-page="${page}">${dateLabel(d)} · 回今天</button>`}
+    <button type="button" class="dnav-btn" ${d>=t?'disabled':''} data-act="nav-date" data-page="${page}" data-delta="1" aria-label="后一天">${ic('chevR')}</button>
+  </div>`;
+}
+
+/* ---- 首页 ---- */
+function renderHome(){
+  const t=todayStr();
+  const hr=new Date().getHours();
+  const greet=hr<5?'夜深了':hr<9?'早上好':hr<12?'上午好':hr<14?'中午好':hr<18?'下午好':'晚上好';
+  const nick=db.settings.nickname?'，'+esc(db.settings.nickname):'';
+  const now=new Date();
+
+  const lw=latestWeight(),pw=prevWeightRec();
+  const diff=lw&&pw?+(lw.value-pw.value).toFixed(1):null;
+  const todayMeals=byDate(db.meals,t);
+  const slotDone=['breakfast','lunch','dinner'].map(k=>todayMeals.some(m=>m.type===k));
+  const bowelT=byDate(db.bowels,t).length;
+  const lastB=lastRecord(db.bowels);
+  const sinceB=lastB?daysSince(lastB.date):null;
+  const steps=dailySteps(t),goal=+db.settings.stepGoal||8000;
+  const isEmpty=!db.meals.length&&!db.weights.length&&!db.bowels.length&&!db.walks.length;
+
+  const wSer=weightSeries(7);
+  const sSer=lastNDays(7).map(d=>({label:shortD(d),value:dailySteps(d),today:d===t}));
+  const week=lastNDays(7);
+  const weekBowel=week.reduce((a,d)=>a+byDate(db.bowels,d).length,0);
+  const weekSteps=week.reduce((a,d)=>a+dailySteps(d),0);
+  const weekGoal=week.filter(d=>dailySteps(d)>=goal).length;
+  const weekMeals=week.reduce((a,d)=>a+byDate(db.meals,d).length,0);
+
+  const items=[
+    {emoji:'⚖️',name:'称一次体重',done:byDate(db.weights,t).length>0,act:'open-weight-t'},
+    {emoji:'🌅',name:'吃早餐',done:slotDone[0],act:'open-meal-t',type:'breakfast'},
+    {emoji:'☀️',name:'吃午餐',done:slotDone[1],act:'open-meal-t',type:'lunch'},
+    {emoji:'🌙',name:'吃晚餐',done:slotDone[2],act:'open-meal-t',type:'dinner'},
+    {emoji:'💩',name:'排便打卡',done:bowelT>0,act:'open-bowel-t'},
+    {emoji:'🚶',name:'步行锻炼',done:steps>0,act:'open-walk-t'},
+  ];
+  const doneCnt=items.filter(i=>i.done).length;
+
+  const wVal=lw?fmt1(lw.value):'—';
+  const wSub=!lw?'点击记录':(diff!==null?(diff>0?`▲ ${fmt1(Math.abs(diff))} kg 较上次`:diff<0?`▼ ${fmt1(Math.abs(diff))} kg 较上次`:'与上次持平'):`${dateLabel(lw.date)}记录`);
+  const mealSub=slotDone.every(Boolean)?'早午晚都已记录 👍':`还差 ${['早餐','午餐','晚餐'].filter((x,i)=>!slotDone[i]).join('、')}`;
+  const bowelSub=bowelT>0?'今天已记录':(lastB?(sinceB>0?`距上次 ${sinceB} 天`:'就在今天'):'点击记录');
+  const walkPct=goal?Math.round(steps/goal*100):0;
+  const walkVal=steps>=10000?(steps/10000).toFixed(1)+'<small>万</small>':(steps?String(steps):'—');
+  const walkSub=steps<=0?'去走一走':(steps>=goal?`目标达成 ${walkPct}% 🎉`:`完成目标 ${walkPct}%`);
+
+  $('#page-home').innerHTML=`
+    <div class="home-head">
+      <div><div class="home-hi">${greet}${nick}</div><div class="home-date">${now.getMonth()+1}月${now.getDate()}日 · 周${'日一二三四五六'[now.getDay()]}</div></div>
+      <div class="brand">🌱 健康手账</div>
+    </div>
+    ${isEmpty?`<div class="onboard"><h2>欢迎使用健康手账 🌱</h2>
+      <p>记录三餐、体重、排便和步行，看看自己的身体节奏。不需要登录，所有数据只保存在这台设备的浏览器里。</p>
+      <div class="onboard-btns"><button type="button" class="btn btn-white" data-act="demo">载入示例数据看看</button>
+      <button type="button" class="btn btn-line" data-act="goto" data-page="meals">直接开始记录</button></div></div>`:''}
+    <div class="tiles">
+      <div class="tile" data-act="open-weight-t">
+        <div class="tile-ic" style="--tc:#0E9F6E;--tcbg:#E2F4EB">${ic('scale')}</div>
+        <div class="tile-label">体重</div>
+        <div class="tile-value">${wVal}${lw?'<small>kg</small>':''}</div>
+        <div class="tile-sub ${wSub.includes('▼')?'good':''}">${wSub}</div>
+      </div>
+      <div class="tile" data-act="goto" data-page="meals">
+        <div class="tile-ic" style="--tc:#E8962A;--tcbg:#FBF1DF">${ic('meal')}</div>
+        <div class="tile-label">三餐</div>
+        <div class="tile-value">${todayMeals.length}<small>餐</small></div>
+        <div class="tile-sub ${slotDone.every(Boolean)?'good':''}">${mealSub}</div>
+      </div>
+      <div class="tile" data-act="goto" data-page="bowel">
+        <div class="tile-ic" style="--tc:#A06B42;--tcbg:#F5ECE0">${ic('poop')}</div>
+        <div class="tile-label">排便</div>
+        <div class="tile-value">${bowelT?bowelT+'<small>次</small>':'—'}</div>
+        <div class="tile-sub">${bowelSub}</div>
+      </div>
+      <div class="tile" data-act="goto" data-page="walk">
+        <div class="tile-ic" style="--tc:#3E7CFA;--tcbg:#E8EFFD">${ic('walk')}</div>
+        <div class="tile-label">步行</div>
+        <div class="tile-value">${walkVal}<small>步</small></div>
+        <div class="tile-sub ${steps>=goal?'good':''}">${walkSub}</div>
+      </div>
+    </div>
+    <div class="card"><div class="card-h"><div><div class="card-t">今日打卡</div><div class="card-s">${doneCnt}/${items.length} 项已完成</div></div></div>
+      ${items.map(it=>`<div class="check-row"><div class="check-emoji">${it.emoji}</div><div class="check-name">${it.name}</div>
+        ${it.done?`<span class="check-done">${ic('check')}</span>`:`<button type="button" class="check-go" data-act="${it.act}"${it.type?` data-type="${it.type}"`:''}>去记录 ›</button>`}</div>`).join('')}
+    </div>
+    <div class="card"><div class="card-h"><div><div class="card-t">体重趋势</div><div class="card-s">${wSer.length?`最近 ${wSer.length} 次记录`:'暂无记录'}</div></div>
+      <button type="button" class="link-btn" data-act="goto" data-page="meals">管理</button></div>
+      ${wSer.length>1?svgLine(wSer):`<div class="chart-empty">${wSer.length===1?'已有 1 次记录，再来一次就能看到趋势啦':'记录体重后这里会显示趋势'}</div>`}
+    </div>
+    <div class="card"><div class="card-h"><div><div class="card-t">步行近 7 天</div><div class="card-s">目标每天 ${shortNum(goal)} 步</div></div>
+      <button type="button" class="link-btn" data-act="goto" data-page="walk">详情</button></div>
+      ${svgBars(sSer,{goal})}
+    </div>
+    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天小结</div></div></div>
+      <div class="chips-stat">
+        <span class="schip">💩 排便 <b>${weekBowel}</b> 次</span>
+        <span class="schip">🚶 日均 <b>${shortNum(weekSteps/7)}</b> 步</span>
+        <span class="schip">🎯 步数达标 <b>${weekGoal}/7</b> 天</span>
+        <span class="schip">🍚 记录 <b>${weekMeals}</b> 餐</span>
+      </div>
+    </div>
+    <div class="foot-note">已记录 ${recordDays()} 天 · 数据仅保存在本设备 · 记得常备份</div>`;
+}
+
+/* ---- 三餐 + 体重 ---- */
+function satisTag(v){
+  if(v==null||v==='')return '';
+  const s=SATISFY.find(x=>x.v===+v);
+  return s?`<span class="tag">${s.emoji} ${s.name}</span>`:'';
+}
+function renderMeals(){
+  const d=view.meals,t=todayStr();
+  const list=byDate(db.meals,d).slice().sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const wRecs=byDate(db.weights,d).slice().sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const dayW=wRecs.length?wRecs[wRecs.length-1]:null;
+  const lw=latestWeight(),bmi=bmiInfo();
+  const TIPS=['细嚼慢咽，吃到七八分饱就停一停','晚餐尽量在睡前 3 小时完成','先吃菜和蛋白质，再吃主食，血糖更平稳','每天喝够 1500 – 1700 毫升水','加餐优先选水果、坚果或无糖酸奶','少喝含糖饮料，渴了先喝水'];
+  const tip=TIPS[new Date().getDate()%TIPS.length];
+
+  $('#page-meals').innerHTML=`
+    <div class="page-head"><h1>三餐 · 体重</h1><div class="page-sub">好好吃饭，好好生活</div></div>
+    ${dateNav('meals')}
+    <div class="card">
+      <div class="w-card">
+        <div class="w-ic">${ic('scale')}</div>
+        <div class="w-main">
+          <div class="w-label">${dateLabel(d)}体重</div>
+          <div class="w-value">${dayW?fmt1(dayW.value):'—'}${dayW?'<small>kg</small>':''}${bmi?`<span class="bmi-tag ${bmi.c}">BMI ${bmi.v} · ${bmi.s}</span>`:''}</div>
+          <div class="w-sub">${dayW?`${dayW.time} 记录`:(lw?`上次 ${fmt1(lw.value)} kg · ${dateLabel(lw.date)}`:'还没有记录过体重')}</div>
+        </div>
+        <button type="button" class="btn btn-primary sm" data-act="open-weight">记体重</button>
+      </div>
+      ${wRecs.length?wRecs.map(w=>`<div class="rec" style="margin-top:4px" data-act="edit-weight" data-id="${w.id}">
+        <div class="rec-ic weights-bg">${ic('scale')}</div>
+        <div class="rec-main"><div class="rec-t">${fmt1(w.value)} kg</div><div class="rec-s">${w.time}${w.note?' · '+esc(w.note):''}</div></div>
+        <button type="button" class="rec-del" data-act="del-weight" data-id="${w.id}" aria-label="删除">${ic('trash')}</button>
+      </div>`).join(''):''}
+    </div>
+    ${MEALS.map(m=>{
+      const items=list.filter(x=>x.type===m.k);
+      return `<div class="card">
+        <div class="meal-head">
+          <div class="meal-ic meal-${m.k}">${m.icon}</div>
+          <div><div class="meal-name">${m.name}</div><div class="meal-hint">${m.hint}</div></div>
+          <button type="button" class="add-mini" data-act="open-meal" data-type="${m.k}" aria-label="记录${m.name}">${ic('plus')}</button>
+        </div>
+        ${items.length?items.map(it=>`<div class="meal-item" data-act="edit-meal" data-id="${it.id}">
+          <div class="mi-time">${it.time||'--:--'}</div>
+          <div class="mi-main"><div class="mi-content">${esc(it.content)}</div>
+            <div class="mi-tags">${it.cal?`<span class="tag">🔥 ${it.cal} 千卡</span>`:''}${satisTag(it.satis)}</div></div>
+          <button type="button" class="mi-del" data-act="del-meal" data-id="${it.id}" aria-label="删除">${ic('x')}</button>
+        </div>`).join(''):`<div class="meal-empty">${d===t?'今天还没记录'+m.name:'当天没有'+m.name+'记录'}</div>`}
+      </div>`;
+    }).join('')}
+    <div class="tip-card">💡 ${tip}</div>`;
+}
+
+/* ---- 排便 ---- */
+function bowelTip(avg){
+  if(avg==null)return '开始记录后，这里会给出肠道状态的小结';
+  if(avg<2.5)return '近期形态偏硬，多喝水、补充膳食纤维（蔬果、粗粮）会有改善';
+  if(avg>5.5)return '近期形态偏稀，留意饮食卫生，少吃生冷刺激的食物';
+  return '形态适中，肠道状态不错，继续保持';
+}
+function renderBowel(){
+  const d=view.bowel,t=todayStr();
+  const list=byDate(db.bowels,d).slice().sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const week=lastNDays(7);
+  const weekCnt=week.reduce((a,x)=>a+byDate(db.bowels,x).length,0);
+  const lastB=lastRecord(db.bowels);
+  const since=lastB?daysSince(lastB.date):null;
+  const m30=db.bowels.filter(b=>daysSince(b.date)<=30);
+  const avg=m30.length?m30.reduce((a,b)=>a+(+b.bristol||4),0)/m30.length:null;
+  const warnColor=db.bowels.some(b=>daysSince(b.date)<=7&&(b.color==='黑色'||b.color==='红色'));
+
+  $('#page-bowel').innerHTML=`
+    <div class="page-head"><h1>排便记录</h1><div class="page-sub">肠道健康，一目了然</div></div>
+    ${dateNav('bowel')}
+    <div class="card">
+      <div class="stat3">
+        <div class="stat3-item"><div class="stat3-num">${list.length}</div><div class="stat3-lab">今日次数</div></div>
+        <div class="stat3-item"><div class="stat3-num">${weekCnt}</div><div class="stat3-lab">近 7 天次数</div></div>
+        <div class="stat3-item"><div class="stat3-num">${since==null?'—':(since===0?'今天':since+' 天')}</div><div class="stat3-lab">距上次</div></div>
+      </div>
+      <div class="tip-line">💡 ${bowelTip(avg)}</div>
+    </div>
+    ${since!=null&&since>=3?`<div class="remind-card">${ic('warn')}<div>距上次排便已经 <b>${since}</b> 天了，多喝水、多走动、吃点蔬果会有帮助。</div></div>`:''}
+    ${warnColor?`<div class="remind-card red">${ic('warn')}<div>近 7 天记录过黑色或红色的便便，若持续出现建议咨询医生。</div></div>`:''}
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">${dateLabel(d)}的记录</div><div class="card-s">点击记录可以编辑</div></div>
+        <button type="button" class="btn btn-ghost sm" data-act="open-bowel">＋ 记一笔</button></div>
+      ${list.length?list.map(r=>`<div class="rec" data-act="edit-bowel" data-id="${r.id}">
+        <div class="rec-ic bowels-bg">${ic('poop')}</div>
+        <div class="rec-main"><div class="rec-t">${r.bristol} 型 · ${BRISTOL[r.bristol-1]?BRISTOL[r.bristol-1].name:'—'} · ${easeName(r.ease)}</div>
+        <div class="rec-s">${r.time||'--:--'} · ${r.color||'未记颜色'}${r.note?' · '+esc(r.note):''}</div></div>
+        <button type="button" class="rec-del" data-act="del-bowel" data-id="${r.id}" aria-label="删除">${ic('trash')}</button>
+      </div>`).join(''):`<div class="empty"><div class="empty-emoji">🚽</div><div>${d===t?'今天还没有记录':'当天没有记录'}</div></div>`}
+    </div>
+    <div class="tip-card">💡 布里斯托分型中，3～4 型是最理想的形态；1～2 型偏便秘，6～7 型偏腹泻。</div>`;
+}
+
+/* ---- 步行 ---- */
+function renderWalk(){
+  const d=view.walk,t=todayStr();
+  const entries=byDate(db.walks,d);
+  const steps=dailySteps(d);
+  const goal=+db.settings.stepGoal||8000;
+  const dist=+entries.reduce((a,e)=>a+(+e.km||0),0).toFixed(1);
+  const mins=entries.reduce((a,e)=>a+(+e.mins||0),0);
+  const kcal=kcalOf(steps);
+  const pct=goal?Math.min(1,steps/goal):0;
+  const week=lastNDays(7);
+  const weekSteps=week.reduce((a,x)=>a+dailySteps(x),0);
+  const weekGoal=week.filter(x=>dailySteps(x)>=goal).length;
+  const maxDay=Math.max(...week.map(x=>dailySteps(x)),0);
+  const chartItems=week.map(x=>({label:shortD(x),value:dailySteps(x),today:x===t}));
+  const noHeight=!+db.settings.height;
+
+  $('#page-walk').innerHTML=`
+    <div class="page-head"><h1>步行锻炼</h1><div class="page-sub">每一步都算数</div></div>
+    ${dateNav('walk')}
+    <div class="card walk-hero">
+      <div class="ring-wrap">${svgRing(pct)}<div class="ring-c"><div class="ring-v">${shortNum(steps)}</div><div class="ring-l">/ ${shortNum(goal)} 步</div></div></div>
+      ${steps>=goal?'<div class="goal-hit">🎉 今日目标已达成</div>':`<div class="goal-sub">${goal?`还差 ${shortNum(Math.max(0,goal-steps))} 步达成目标`:'先到「数据」页设置每日目标吧'}</div>`}
+      <div class="walk-stats">
+        <div class="ws"><div class="ws-v">${dist}</div><div class="ws-l">公里</div></div>
+        <div class="ws"><div class="ws-v">${mins}</div><div class="ws-l">分钟</div></div>
+        <div class="ws"><div class="ws-v">≈${kcal}</div><div class="ws-l">千卡</div></div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" data-act="open-walk">＋ 记录一次步行</button>
+    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天步数</div><div class="card-s">每天目标 ${shortNum(goal)} 步</div></div></div>
+      ${svgBars(chartItems,{goal})}
+    </div>
+    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天统计</div></div></div>
+      <div class="stats2x2">
+        <div class="ws"><div class="ws-v">${shortNum(weekSteps)}</div><div class="ws-l">总步数</div></div>
+        <div class="ws"><div class="ws-v">${shortNum(weekSteps/7)}</div><div class="ws-l">日均步数</div></div>
+        <div class="ws"><div class="ws-v">${weekGoal}<small style="font-size:12px;color:var(--text-3)">/7</small></div><div class="ws-l">达标天数</div></div>
+        <div class="ws"><div class="ws-v">${shortNum(maxDay)}</div><div class="ws-l">单日最高</div></div>
+      </div>
+    </div>
+    ${entries.length?`<div class="card"><div class="card-h"><div><div class="card-t">${dateLabel(d)}的步行</div><div class="card-s">点击可编辑，一天可记多段</div></div></div>
+      ${entries.map(e=>`<div class="rec" data-act="edit-walk" data-id="${e.id}">
+        <div class="rec-ic walks-bg">${ic('walk')}</div>
+        <div class="rec-main"><div class="rec-t">${shortNum(e.steps)} 步${e.km?` · ${e.km} km`:''}</div>
+        <div class="rec-s">${e.time||'--:--'}${e.mins?` · ${e.mins} 分钟`:''}${e.note?' · '+esc(e.note):''}</div></div>
+        <button type="button" class="rec-del" data-act="del-walk" data-id="${e.id}" aria-label="删除">${ic('trash')}</button>
+      </div>`).join('')}</div>`:''}
+    ${noHeight?`<div class="tip-card">📏 在「数据」页填写身高后，步行距离会按你的步幅自动估算（当前按 0.7 米/步）。</div>`:''}`;
+}
+
+/* ---- 数据与设置 ---- */
+function sumOf(t,r){
+  if(t==='meals')return esc(r.content)+(r.cal?` · ${r.cal} 千卡`:'');
+  if(t==='weights')return `${fmt1(r.value)} kg`;
+  if(t==='bowels')return `${r.bristol} 型 · ${easeName(r.ease)}`;
+  return `${shortNum(r.steps)} 步${r.km?` · ${r.km} km`:''}`;
+}
+function allRecords(){
+  const out=[];
+  for(const t of ['meals','weights','bowels','walks'])db[t].forEach(r=>out.push({t,r}));
+  out.sort((a,b)=>((b.r.date||'')+(b.r.time||'')).localeCompare((a.r.date||'')+(a.r.time||'')));
+  return out;
+}
+function renderData(){
+  const s=db.settings;
+  const bmi=bmiInfo();
+  const lw=latestWeight();
+  const days=recordDays();
+  const allDates=new Set();['meals','weights','bowels','walks'].forEach(t=>db[t].forEach(r=>allDates.add(r.date)));
+  const sorted=[...allDates].sort();
+  const range=sorted.length?`${shortD(sorted[0])} – ${shortD(sorted[sorted.length-1])}`:'—';
+  const counts={meals:db.meals.length,weights:db.weights.length,bowels:db.bowels.length,walks:db.walks.length};
+  const total=counts.meals+counts.weights+counts.bowels+counts.walks;
+
+  let rows=allRecords();
+  if(state.browse!=='all')rows=rows.filter(x=>x.t===state.browse);
+  rows=rows.slice(0,60);
+  const browseChips=[['all','全部 '+total],['meals','三餐 '+counts.meals],['weights','体重 '+counts.weights],['bowels','排便 '+counts.bowels],['walks','步行 '+counts.walks]]
+    .map(([v,n])=>`<button type="button" class="chip ${state.browse===v?'on':''}" data-act="browse-type" data-v="${v}">${n}</button>`).join('');
+  const browseRows=rows.length?rows.map(({t,r})=>`<div class="rec" data-act="edit-any" data-type="${t}" data-id="${r.id}">
+      <div class="rec-ic emoji ${t}-bg">${TYPE_META[t].icon}</div>
+      <div class="rec-main"><div class="rec-t">${sumOf(t,r)}</div><div class="rec-s">${dateLabel(r.date)} ${r.time||''}</div></div>
+      <button type="button" class="rec-del" data-act="del-any" data-type="${t}" data-id="${r.id}" aria-label="删除">${ic('trash')}</button>
+    </div>`).join(''):'<div class="empty"><div class="empty-emoji">📭</div><div>还没有记录</div></div>';
+
+  $('#page-data').innerHTML=`
+    <div class="page-head"><h1>数据与设置</h1><div class="page-sub">你的数据，你做主</div></div>
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">个人设置</div><div class="card-s">修改后会自动保存</div></div></div>
+      <div class="set-row"><div class="set-lab">昵称</div><input class="input set-in" id="setNick" maxlength="12" placeholder="怎么称呼你" value="${esc(s.nickname)}"></div>
+      <div class="set-row"><div class="set-lab">身高（cm）</div><input type="number" inputmode="numeric" class="input set-in" id="setHeight" placeholder="如 170" value="${s.height||''}"></div>
+      <div class="set-row noline"><div class="set-lab">每日步数目标</div><input type="number" inputmode="numeric" class="input set-in" id="setGoal" value="${s.stepGoal}"></div>
+      <div class="chips" style="margin-top:10px">${[6000,8000,10000].map(g=>`<button type="button" class="chip ${+s.stepGoal===g?'on':''}" data-act="set-goal" data-v="${g}">${shortNum(g)} 步</button>`).join('')}</div>
+      ${bmi?`<div class="bmi-card"><div><div class="bmi-v">BMI<b>${bmi.v}</b></div><div class="bmi-s">基于最近体重 ${fmt1(lw.value)} kg 与身高 ${s.height} cm</div></div>
+        <span class="bmi-badge ${bmi.c}">${bmi.s}</span></div>`:''}
+    </div>
+    ${syncCardHTML()}
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">数据统计</div></div></div>
+      <div class="data-grid">
+        <div class="dg"><div class="dg-e">🍚</div><div class="dg-v">${counts.meals}</div><div class="dg-l">三餐记录</div></div>
+        <div class="dg"><div class="dg-e">⚖️</div><div class="dg-v">${counts.weights}</div><div class="dg-l">体重记录</div></div>
+        <div class="dg"><div class="dg-e">💩</div><div class="dg-v">${counts.bowels}</div><div class="dg-l">排便记录</div></div>
+        <div class="dg"><div class="dg-e">🚶</div><div class="dg-v">${counts.walks}</div><div class="dg-l">步行记录</div></div>
+      </div>
+      <div class="stat-line">共记录 <b>${days}</b> 天 · ${range}</div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">数据管理</div></div></div>
+      <div class="mg-row" data-act="export"><div class="mg-ic">${ic('download')}</div>
+        <div class="mg-main"><div class="mg-name">导出备份</div><div class="mg-sub">下载 JSON 文件，保存到本地或网盘</div></div><div class="mg-arrow">›</div></div>
+      <div class="mg-row" data-act="import"><div class="mg-ic">${ic('upload')}</div>
+        <div class="mg-main"><div class="mg-name">导入备份</div><div class="mg-sub">恢复之前导出的数据（会覆盖现有数据）</div></div><div class="mg-arrow">›</div></div>
+      <div class="mg-row" data-act="demo"><div class="mg-ic">${ic('spark')}</div>
+        <div class="mg-main"><div class="mg-name">生成示例数据</div><div class="mg-sub">生成近 14 天的模拟数据，方便体验功能</div></div><div class="mg-arrow">›</div></div>
+      <div class="mg-row danger" data-act="clear"><div class="mg-ic">${ic('trash')}</div>
+        <div class="mg-main"><div class="mg-name">清空全部记录</div><div class="mg-sub">删除所有记录，无法恢复（设置保留）</div></div><div class="mg-arrow">›</div></div>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">记录浏览</div><div class="card-s">最近 60 条</div></div></div>
+      <div class="chips" style="margin-bottom:8px">${browseChips}</div>
+      ${browseRows}
+    </div>
+    <div class="foot-note">健康手账 v1.3 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
+}
+
+/* ================= 数据操作 ================= */
+function exportData(){
+  try{
+    const payload=Object.assign({},db,{app:'health-diary',version:1});
+    if(syncConf)payload.sync={code:fmtCode(syncConf.code)};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=`健康手账备份_${todayStr()}.json`;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    toast('备份文件已导出');
+  }catch(e){toast('导出失败','warn')}
+}
+function doImport(inp){
+  const file=inp.files&&inp.files[0];
+  inp.value='';
+  if(!file)return;
+  const fr=new FileReader();
+  fr.onload=()=>{
+    let d=null;
+    try{d=JSON.parse(fr.result)}catch(e){}
+    const ok=d&&typeof d==='object'&&['meals','weights','bowels','walks'].every(k=>Array.isArray(d[k]));
+    if(!ok){toast('文件格式不正确，导入失败','warn');return}
+    const n=d.meals.length+d.weights.length+d.bowels.length+d.walks.length;
+    confirmDialog({title:'导入备份',msg:`备份中有 ${n} 条记录，导入后将覆盖当前全部数据和设置。确定继续吗？`,okText:'导入',onOk:()=>{
+      db={meals:d.meals,weights:d.weights,bowels:d.bowels,walks:d.walks,deleted:Array.isArray(d.deleted)?d.deleted:[],settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
+      save();go('home');toast('导入成功，共恢复 '+n+' 条记录');
+      /* 备份里带同步码时，一并恢复绑定 */
+      const code=normCode(d.sync&&d.sync.code);
+      if(code.length===16){
+        (async()=>{syncConf={code,k:await shaHex(code),lastSync:0};saveSyncConf();syncNow()})();
+      }
+    }});
+  };
+  fr.onerror=()=>toast('读取文件失败','warn');
+  fr.readAsText(file);
+}
+function buildDemo(){
+  const t=todayStr();
+  const bF=['燕麦粥 + 水煮蛋','全麦面包 + 牛奶','杂粮粥 + 茶叶蛋','豆浆 + 香菇菜包','香蕉 + 无糖酸奶','小米粥 + 蒸蛋'];
+  const lF=['鸡胸肉沙拉','番茄炒蛋盖饭','牛肉面','糙米饭 + 清蒸鱼','饺子一份','咖喱鸡饭','三明治 + 蔬菜汤'];
+  const dF=['清炒时蔬 + 米饭','冬瓜排骨汤 + 小碗饭','番茄牛腩 + 杂粮饭','小米粥 + 凉拌菜','三文鱼 + 西兰花','蒸南瓜 + 玉米'];
+  const sF=['苹果一个','坚果一小把','无糖酸奶','橙子一个','黑咖啡','全麦饼干两片'];
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const rm=(h1,h2)=>pad(h1+Math.floor(Math.random()*(h2-h1+1)))+':'+pad(Math.floor(Math.random()*60));
+  const satis=()=>{const v=Math.random();return v<.15?0:v<.78?1:2};
+  for(let i=13;i>=0;i--){
+    const d=addDays(t,-i);
+    if(i===0||Math.random()<.8)db.weights.push({id:uid(),date:d,time:rm(7,8),value:+(72.6-i*.1+(Math.random()*.5-.25)).toFixed(1)});
+    if(Math.random()<.85)db.meals.push({id:uid(),date:d,type:'breakfast',time:rm(7,9),content:pick(bF),cal:280+Math.floor(Math.random()*160),satis:satis()});
+    if(Math.random()<.95)db.meals.push({id:uid(),date:d,type:'lunch',time:rm(12,13),content:pick(lF),cal:500+Math.floor(Math.random()*220),satis:satis()});
+    if(Math.random()<.9)db.meals.push({id:uid(),date:d,type:'dinner',time:rm(18,19),content:pick(dF),cal:400+Math.floor(Math.random()*180),satis:satis()});
+    if(Math.random()<.4)db.meals.push({id:uid(),date:d,type:'snack',time:Math.random()<.5?rm(15,16):rm(20,21),content:pick(sF),cal:80+Math.floor(Math.random()*120),satis:1});
+    const base=3000+Math.floor(Math.random()*8000);
+    db.walks.push({id:uid(),date:d,time:rm(19,20),steps:base,mins:Math.round(base/95),km:+(base*.00072).toFixed(1)});
+    if(Math.random()<.35){const b2=1500+Math.floor(Math.random()*3000);
+      db.walks.push({id:uid(),date:d,time:rm(12,13),steps:b2,mins:Math.round(b2/95),km:+(b2*.00072).toFixed(1)});}
+    if(Math.random()<.62){
+      const br=[2,3,3,4,4,4,4,5,5,6][Math.floor(Math.random()*10)];
+      db.bowels.push({id:uid(),date:d,time:rm(8,10),bristol:br,
+        ease:br<=2?'hard':(br>=6?'easy':(Math.random()<.6?'normal':'easy')),
+        color:['棕黄','棕黄','棕黄','深棕','深棕','墨绿'][Math.floor(Math.random()*6)],note:''});
+    }
+  }
+}
+function genDemo(){
+  const has=db.meals.length||db.weights.length||db.bowels.length||db.walks.length;
+  const run=()=>{buildDemo();save();go('home');toast('示例数据已生成 🌱')};
+  if(has)confirmDialog({title:'生成示例数据',msg:'当前已有记录，示例数据会追加在现有数据之后，可随时在「清空全部记录」里删除。继续吗？',okText:'生成',onOk:run});
+  else run();
+}
+function confirmDel(type,id){
+  confirmDialog({title:'删除记录',msg:'删除后无法恢复，确定删除这条记录吗？',okText:'删除',danger:true,
+    onOk:()=>{removeRecord(type,id);save();render(cur);toast('已删除')}});
+}
+
+/* ================= 事件绑定 ================= */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');
+  if(el){
+    const act=el.dataset.act,id=el.dataset.id;
+    switch(act){
+      case 'goto':go(el.dataset.page);break;
+      case 'nav-date':{
+        const p=el.dataset.page;
+        const nd=addDays(view[p],+el.dataset.delta);
+        if(nd<=todayStr()){view[p]=nd;render(p)}
+        break;}
+      case 'goto-today':view[el.dataset.page]=todayStr();render(el.dataset.page);break;
+      case 'open-meal':openMealSheet(null,view.meals,el.dataset.type);break;
+      case 'open-meal-t':openMealSheet(null,todayStr(),el.dataset.type);break;
+      case 'edit-meal':openMealSheet(findById('meals',id));break;
+      case 'del-meal':confirmDel('meals',id);break;
+      case 'open-weight':openWeightSheet(null,view.meals);break;
+      case 'open-weight-t':openWeightSheet(null,todayStr());break;
+      case 'edit-weight':openWeightSheet(findById('weights',id));break;
+      case 'del-weight':confirmDel('weights',id);break;
+      case 'open-bowel':openBowelSheet(null,view.bowel);break;
+      case 'open-bowel-t':openBowelSheet(null,todayStr());break;
+      case 'edit-bowel':openBowelSheet(findById('bowels',id));break;
+      case 'del-bowel':confirmDel('bowels',id);break;
+      case 'open-walk':openWalkSheet(null,view.walk);break;
+      case 'open-walk-t':openWalkSheet(null,todayStr());break;
+      case 'edit-walk':openWalkSheet(findById('walks',id));break;
+      case 'del-walk':confirmDel('walks',id);break;
+      case 'edit-any':{
+        const t=el.dataset.type,r=findById(t,id);
+        if(!r)break;
+        if(t==='meals')openMealSheet(r);
+        else if(t==='weights')openWeightSheet(r);
+        else if(t==='bowels')openBowelSheet(r);
+        else openWalkSheet(r);
+        break;}
+      case 'del-any':confirmDel(el.dataset.type,id);break;
+      case 'browse-type':state.browse=el.dataset.v;renderData();break;
+      case 'set-goal':db.settings.stepGoal=+el.dataset.v;db.settings.updatedAt=Date.now();save();renderData();toast('每日目标已更新');break;
+      case 'export':exportData();break;
+      case 'import':{const f=$('#importFile');if(f)f.click();break;}
+      case 'demo':genDemo();break;
+      case 'sync-gen':syncGen();break;
+      case 'sync-bind':syncBind();break;
+      case 'sync-now':syncNow(true);break;
+      case 'sync-copy':copySyncCode();break;
+      case 'sync-rotate':syncRotate();break;
+      case 'sync-off':syncOff();break;
+      case 'clear':confirmDialog({title:'清空全部记录',msg:'将删除全部三餐、体重、排便和步行记录（昵称、身高等设置会保留），此操作无法撤销。若已开启云同步，删除也会同步到其他设备。',okText:'全部删除',danger:true,
+        onOk:()=>{
+          TYPES.forEach(t=>db[t].forEach(r=>{if(!r.updatedAt)r.updatedAt=Date.now();db.deleted.push({id:r.id,at:Date.now()})}));
+          db.meals=[];db.weights=[];db.bowels=[];db.walks=[];
+          if(db.deleted.length>500)db.deleted=db.deleted.slice(-400);
+          save();render(cur);toast('已清空');
+        }});break;
+    }
+    return;
+  }
+  /* chip / bristol 单选 */
+  const chip=e.target.closest('.chip[data-v],.br-item[data-v]');
+  if(chip){
+    const par=chip.parentElement;
+    par.querySelectorAll(':scope > .chip, :scope > .br-item').forEach(c=>c.classList.remove('on'));
+    chip.classList.add('on');
+    if(par.id==='bType'){const h=$('#brHint');if(h)h.innerHTML=bristolHint(+chip.dataset.v)}
+    if(par.id==='bColor'){const w=$('#bWarn');if(w)w.hidden=!BCOLOR.find(c=>c.v===chip.dataset.v&&c.warn)}
+  }
+});
+document.addEventListener('change',e=>{
+  const id=e.target.id;
+  if(id==='importFile'){doImport(e.target);return}
+  if(id==='setNick'){db.settings.nickname=e.target.value.trim().slice(0,12);db.settings.updatedAt=Date.now();save();toast('已保存');return}
+  if(id==='setHeight'){
+    const v=+e.target.value;
+    if(!(v>=50&&v<=260)){toast('身高请在 50 – 260 cm 之间','warn');e.target.value=db.settings.height||'';return}
+    db.settings.height=Math.round(v);db.settings.updatedAt=Date.now();save();renderData();toast('身高已保存');return;
+  }
+  if(id==='setGoal'){
+    const v=+e.target.value;
+    if(!(v>=500&&v<=100000)){toast('目标范围 500 – 100000 步','warn');e.target.value=db.settings.stepGoal;return}
+    db.settings.stepGoal=Math.round(v);db.settings.updatedAt=Date.now();save();renderData();toast('目标已更新');return;
+  }
+});
+/* 同步码输入框回车绑定 */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.id==='syncCodeInput'){e.preventDefault();syncBind()}
+});
+/* 步行 sheet：步数联动距离 */
+sheetRoot.addEventListener('input',e=>{
+  if(e.target.id==='wSteps'){
+    const km=$('#wKm');
+    if(km&&km.dataset.auto!=='0'&&$('#sheetForm')){
+      const v=+e.target.value;
+      if(v>0&&v<=200000)km.value=autoKm(Math.round(v));
+    }
+  }
+  if(e.target.id==='wKm')e.target.dataset.auto='0';
+});
+
+/* ================= 启动 ================= */
+$('#nav').innerHTML=[['home','首页','home'],['meals','三餐','meal'],['bowel','排便','poop'],['walk','步行','walk'],['data','数据','data']]
+  .map(([p,n,i])=>`<button type="button" class="nav-item${p==='home'?' active':''}" data-act="goto" data-page="${p}" aria-label="${n}">${ic(i)}<span>${n}</span></button>`).join('');
+go('home');
+/* 已开启云同步：启动 1 秒后自动拉取一次 */
+setTimeout(()=>{if(syncConf)syncNow()},1000);
+</script>
+</body>
+</html>
