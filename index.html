@@ -491,6 +491,17 @@ function mergePayload(cloud){
   db.deleted=[...delMap.entries()].map(([id,at])=>({id,at})).sort((a,b)=>a.at-b.at).slice(-400);
 }
 /* ---- 同步主流程 ---- */
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fetchT=(url,opt)=>{
+  const c=new AbortController();
+  const t=setTimeout(()=>c.abort(),20000);
+  return fetch(url,Object.assign({signal:c.signal},opt)).finally(()=>clearTimeout(t));
+};
+let syncRetryTimer=null;
+function scheduleSyncRetry(){
+  clearTimeout(syncRetryTimer);
+  syncRetryTimer=setTimeout(()=>{if(syncConf&&syncStatus==='error')syncNow()},45000);
+}
 async function syncNow(manual){
   if(!syncConf){return}
   if(syncing){if(manual)toast('正在同步中…');return}
@@ -500,7 +511,7 @@ async function syncNow(manual){
     const key=await deriveKey(syncConf.code);
     const url=SYNC_ROOT+syncConf.k;
     let raw=null;
-    const res=await fetch(url,{cache:'no-store'});
+    const res=await fetchT(url,{cache:'no-store'});
     if(res.ok)raw=await res.text();
     else if(res.status!==404)throw new Error('网络异常（'+res.status+'）');
     let cloud=null;
@@ -518,16 +529,20 @@ async function syncNow(manual){
     if(after!==before){save();render(cur)}
     if(!cloud||after!==canon(cloud)){
       const doc=await encDoc(key,afterP);
-      const pr=await fetch(url,{method:'POST',headers:{'content-type':'text/plain'},body:JSON.stringify(doc)});
+      const pr=await fetchT(url,{method:'POST',headers:{'content-type':'text/plain'},body:JSON.stringify(doc)});
       if(!pr.ok)throw new Error('推送失败（'+pr.status+'）');
     }
-    syncConf.lastSync=Date.now();saveSyncConf();
+    syncConf.lastSync=Date.now();
+    syncConf.total=TYPES.reduce((a,t)=>a+(afterP[t]||[]).length,0);
+    saveSyncConf();
+    clearTimeout(syncRetryTimer);
     setSyncStatus('ok');
-    if(manual)toast('已同步 ✓');
+    if(manual)toast('已同步 ✓ · 云端与本机一致（共 '+syncConf.total+' 条记录）');
   }catch(e){
     syncErrMsg=(e&&e.message)||'同步失败';
     setSyncStatus('error');
-    if(manual)toast('同步失败：'+syncErrMsg,'warn');
+    scheduleSyncRetry();
+    if(manual)toast('同步失败：'+syncErrMsg+'，45 秒后自动重试','warn');
   }finally{
     syncing=false;refreshSyncUI();
   }
@@ -546,7 +561,7 @@ function syncStatusHTML(){
   if(syncStatus==='error')return '⚠ 同步失败：'+syncErrMsg+'，稍后自动重试';
   if(syncStatus==='codeerr')return '⚠ 同步码不匹配，云端数据无法解密';
   if(syncStatus==='nocrypto')return '⚠ 当前环境不支持加密';
-  return '✓ 已同步 · '+fmtSyncTime(syncConf.lastSync);
+  return '✓ 已同步'+(syncConf.total!=null?' · 共 '+syncConf.total+' 条':'')+' · '+fmtSyncTime(syncConf.lastSync);
 }
 function refreshSyncUI(){
   const dot=$('#syncDot'),txt=$('#syncStatusText');
@@ -562,7 +577,7 @@ function syncGen(){
     saveSyncConf();
     renderData();
     toast('同步码已生成，正在上传加密数据…');
-    syncNow();
+    await syncNow(true);
   })();
 }
 async function syncBind(){
@@ -573,8 +588,9 @@ async function syncBind(){
   try{
     const k=await shaHex(code);
     let doc=null;
-    const res=await fetch(SYNC_ROOT+k,{cache:'no-store'});
-    if(res.ok){try{doc=JSON.parse(await res.text())}catch(e){}}
+    const grab=async()=>{const res=await fetchT(SYNC_ROOT+k,{cache:'no-store'});if(res.ok){try{doc=JSON.parse(await res.text())}catch(e){}}};
+    await grab();
+    if(!doc||!doc.ct||!doc.iv){await sleep(3500);await grab()}
     if(doc&&doc.ct&&doc.iv){
       try{await decDoc(await deriveKey(code),doc)}
       catch(e){toast('同步码不正确：无法解密云端数据','warn');return}
@@ -582,8 +598,8 @@ async function syncBind(){
     syncConf={code,k,lastSync:0};
     saveSyncConf();
     renderData();
-    toast(doc?'绑定成功，正在拉取云端数据':'云端暂无数据，将把本机数据上传');
-    syncNow();
+    toast(doc?'绑定成功，正在拉取云端数据':'云端暂无数据（请先在生成同步码的设备看到「✓ 已同步」，再回来点「立即同步」）');
+    await syncNow(true);
   }catch(e){toast('无法连接同步服务，请稍后再试','warn')}
 }
 function copyText(t){
@@ -636,7 +652,7 @@ function syncCardHTML(){
         <input class="input sync-in" id="syncCodeInput" placeholder="输入已有同步码" maxlength="19" autocomplete="off" spellcheck="false">
         <button type="button" class="btn btn-ghost" data-act="sync-bind" style="flex:none;height:46px">绑定</button>
       </div>
-      <div class="sync-tip">在第一台设备点上方按钮生成同步码；手机、公司电脑等其他设备输入同一个码即可同步。<b>云端只保存密文</b>，服务商无法读取内容。</div>
+      <div class="sync-tip">在第一台设备点上方按钮生成同步码，<b>等状态出现「✓ 已同步」后</b>，再到手机、公司电脑等其他设备输入同一个码即可同步。云端只保存密文，服务商无法读取内容。</div>
     </div>`;
   return `<div class="card" id="syncCard">
       <div class="card-h"><div><div class="card-t">云同步</div><div class="card-s">数据加密后中转，服务商无法读取</div></div><span class="sync-dot ${syncStatus==='ok'?'ok':syncStatus==='syncing'?'syncing':'error'}" id="syncDot"></span></div>
@@ -1515,7 +1531,7 @@ function renderData(){
       <div class="chips" style="margin-bottom:8px">${browseChips}</div>
       ${browseRows}
     </div>
-    <div class="foot-note">健康手账 v1.5 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
+    <div class="foot-note">健康手账 v1.5.1 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
 }
 
 /* ================= 数据操作 ================= */
@@ -1751,6 +1767,12 @@ if(migrateWalks())save();
 go('home');
 /* 已开启云同步：启动 1 秒后自动拉取一次 */
 setTimeout(()=>{if(syncConf)syncNow()},1000);
+/* 回到前台时（超过 30 秒未同步）自动对齐一次 */
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&syncConf&&Date.now()-(syncConf.lastSync||0)>30e3){
+    setTimeout(()=>{if(!document.hidden&&syncConf)syncNow()},600);
+  }
+});
 </script>
 </body>
 </html>
