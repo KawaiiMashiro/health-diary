@@ -131,6 +131,30 @@ body.locked{overflow:hidden}
 .dnav-label.ghost{color:var(--text-2)}
 .dnav-label:active{background:var(--card-2)}
 
+/* ---- 日历 ---- */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-title{font-weight:700;font-size:16px}
+.cal-week{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;color:var(--text-3);font-size:12px;margin-bottom:2px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-cell{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:14.5px;border-radius:11px;background:none;color:var(--text-1)}
+.cal-cell:active{background:var(--card-2)}
+.cal-cell.blank{pointer-events:none}
+.cal-cell:disabled{color:var(--text-3);opacity:.45}
+.cal-cell.today{box-shadow:inset 0 0 0 1.5px var(--primary);font-weight:700}
+.cal-cell.sel{background:var(--primary);color:#fff;font-weight:700}
+.cal-dot{position:absolute;bottom:4.5px;left:50%;transform:translateX(-50%);width:4.5px;height:4.5px;border-radius:50%;background:var(--primary)}
+.cal-cell.sel .cal-dot{background:#fff}
+.cal-foot{display:flex;justify-content:center;margin-top:12px}
+
+/* ---- 每日小记 ---- */
+.journal-text{white-space:pre-wrap;word-break:break-word;line-height:1.65;font-size:14.5px;color:var(--text);max-height:11em;overflow-y:auto;padding:2px 2px 4px}
+.journal-empty{color:var(--text-3);font-size:13.5px;padding:4px 2px}
+.j-cnt{display:block;text-align:right}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--card-2);color:var(--text-2);display:flex;align-items:center;justify-content:center;flex:none}
+.icon-btn:active{background:var(--border)}
+.icon-btn svg{width:18px;height:18px}
+.head-actions{display:flex;align-items:center;gap:10px}
+
 /* ============ Meals ============ */
 .meal-head{display:flex;align-items:center;gap:11px;margin-bottom:4px}
 .meal-ic{width:40px;height:40px;border-radius:13px;font-size:20px;display:flex;align-items:center;justify-content:center;flex:none}
@@ -367,19 +391,19 @@ function loadDB(){
     if(d&&typeof d==='object'){
       return {meals:Array.isArray(d.meals)?d.meals:[],weights:Array.isArray(d.weights)?d.weights:[],
               bowels:Array.isArray(d.bowels)?d.bowels:[],walks:Array.isArray(d.walks)?d.walks:[],
-              dailies:Array.isArray(d.dailies)?d.dailies:[],
+              dailies:Array.isArray(d.dailies)?d.dailies:[],journals:Array.isArray(d.journals)?d.journals:[],
               deleted:Array.isArray(d.deleted)?d.deleted:[],
               settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
     }
   }catch(e){}
-  return {meals:[],weights:[],bowels:[],walks:[],dailies:[],deleted:[],settings:Object.assign({},DEF_SETTINGS)};
+  return {meals:[],weights:[],bowels:[],walks:[],dailies:[],journals:[],deleted:[],settings:Object.assign({},DEF_SETTINGS)};
 }
 let db=loadDB();
 
 /* ================= 云同步（同步码模式） ================= */
 const SYNC_CONF_KEY='health_diary_sync';
 const SYNC_ROOT='https://textdb.dev/api/data/';
-const TYPES=['meals','weights','bowels','walks','dailies'];
+const TYPES=['meals','weights','bowels','walks','dailies','journals'];
 let syncConf=null,syncing=false,syncDebTimer=null,syncStatus='ok',syncErrMsg='';
 try{const sc=JSON.parse(localStorage.getItem(SYNC_CONF_KEY));if(sc&&sc.code&&sc.k)syncConf=sc}catch(e){}
 function saveSyncConf(){try{localStorage.setItem(SYNC_CONF_KEY,JSON.stringify(syncConf))}catch(e){}}
@@ -667,7 +691,7 @@ function removeRecord(type,id){
   if(db.deleted.length>500)db.deleted=db.deleted.slice(-400);
   db[type]=db[type].filter(x=>x.id!==id);
 }
-function recordDays(){const s=new Set();['meals','weights','bowels','walks','dailies'].forEach(t=>db[t].forEach(r=>s.add(r.date)));return s.size}
+function recordDays(){const s=new Set();TYPES.forEach(t=>db[t].forEach(r=>s.add(r.date)));return s.size}
 
 /* ================= 常量表 ================= */
 const MEALS=[
@@ -689,7 +713,7 @@ const BRISTOL=[
 ];
 const EASE={easy:'轻松',normal:'一般',hard:'费力'};
 const BCOLOR=[{v:'棕黄'},{v:'深棕'},{v:'墨绿'},{v:'黑色',warn:1},{v:'红色',warn:1}];
-const TYPE_META={meals:{name:'三餐',icon:'🍚'},weights:{name:'体重',icon:'⚖️'},bowels:{name:'排便',icon:'💩'},walks:{name:'锻炼',icon:'🚶'},dailies:{name:'手表汇总',icon:'⌚'}};
+const TYPE_META={meals:{name:'三餐',icon:'🍚'},weights:{name:'体重',icon:'⚖️'},bowels:{name:'排便',icon:'💩'},walks:{name:'锻炼',icon:'🚶'},dailies:{name:'手表汇总',icon:'⌚'},journals:{name:'每日小记',icon:'📝'}};
 
 /* ================= SVG 图标 ================= */
 const I={
@@ -710,6 +734,8 @@ upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8 2.9 19.2c-.3.5 0 1.1.6 1.1h17c.6 0 .9-.6.6-1.1L12 3.8z"/><path d="M12 10v4.6"/><circle cx="12" cy="17.6" r=".7" fill="currentColor" stroke="none"/></svg>',
 spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.7 4.9 4.9 1.7-4.9 1.7L12 16.2l-1.7-4.9-4.9-1.7 4.9-1.7L12 3z"/><circle cx="18.6" cy="17.6" r="1.6"/><circle cx="6.2" cy="19.2" r="1.1"/></svg>',
 cloud:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.2 18.5h9.3a4 4 0 0 0 .6-7.9 5.5 5.5 0 0 0-10.6-1.1 4.4 4.4 0 0 0 .7 9z"/></svg>',
+cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.6" y="5" width="16.8" height="15.4" rx="3.2"/><path d="M8 3v4M16 3v4M3.6 10.2h16.8"/></svg>',
+note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.6h9.4L19 7.2v13.2H6z"/><path d="M15.4 3.6v3.6H19"/><path d="M9.2 12.2h5.6M9.2 15.6h3.6"/></svg>',
 };
 const ic=n=>I[n];
 function bristolGlyph(n){
@@ -745,6 +771,7 @@ function bmiInfo(){
   return {v:+b.toFixed(1),s,c};
 }
 const dailyRec=ds=>(db.dailies||[]).find(x=>x.date===ds);
+const journalOf=ds=>(db.journals||[]).find(x=>x.date===ds);
 function guessMealType(){const h=new Date().getHours();if(h<10)return 'breakfast';if(h<14)return 'lunch';if(h<17)return 'snack';if(h<21)return 'dinner';return 'snack'}
 const easeName=v=>EASE[v]||'一般';
 
@@ -827,9 +854,9 @@ function openSheet(o){
     <div class="sheet-head"><div class="sheet-title">${o.title}</div>
       <button type="button" class="sheet-close" id="sheetClose" aria-label="关闭">${ic('x')}</button></div>
     <form class="sheet-body" id="sheetForm" novalidate>${o.html}</form>
-    <div class="sheet-foot"><button type="submit" form="sheetForm" class="btn btn-primary btn-block" style="margin-bottom:2px">${o.submitText||'保存'}</button></div>
+    ${o.noSubmit?'':`<div class="sheet-foot"><button type="submit" form="sheetForm" class="btn btn-primary btn-block" style="margin-bottom:2px">${o.submitText||'保存'}</button></div>`}
   </div>`;
-  sheetSubmit=o.onSubmit;
+  sheetSubmit=o.onSubmit||null;
   document.body.classList.add('locked');
   requestAnimationFrame(()=>{const m=$('#sheetMask'),s=$('#sheet');if(m)m.classList.add('show');if(s)s.classList.add('open')});
   $('#sheetMask').addEventListener('click',closeSheet);
@@ -1027,9 +1054,85 @@ function openDailySheet(date){
   });
 }
 
+/* ---- 每日小记 ---- */
+function openJournalSheet(date){
+  const d=date||view.home||todayStr();
+  const jr=journalOf(d);
+  openSheet({
+    title:'每日小记 · '+dateLabel(d),
+    html:`
+      <div class="field"><label>${d===todayStr()?'今天做了什么':'这一天做了什么（可修改）'}</label>
+      <textarea class="input" id="jText" rows="7" maxlength="1000" placeholder="几句就好：上班、散步 40 分钟、和朋友吃了火锅……">${jr?esc(jr.content):''}</textarea>
+      <span class="sheet-hint j-cnt"><span id="jCnt">${jr?jr.content.length:0}</span> / 1000 字 · 内容留空保存会删除这条小记</span></div>`,
+    onSubmit(){
+      const content=$('#jText').value.trim();
+      const ex=journalOf(d);
+      if(!content){
+        if(ex){removeRecord('journals',ex.id);save();render(cur);toast('小记已删除')}
+        return;
+      }
+      if(ex){ex.content=content;ex.updatedAt=Date.now()}
+      else db.journals.push({id:'jr-'+d,date:d,content,updatedAt:Date.now()});
+      save();render(cur);
+      toast('小记已保存 ✏️');
+    }
+  });
+}
+
+/* ---- 日历选日 ---- */
+let calY=0,calM=0;
+function calHasSet(){
+  const s=new Set();
+  TYPES.forEach(t=>(db[t]||[]).forEach(r=>{if(r.date)s.add(r.date)}));
+  return s;
+}
+function calMonthHTML(page){
+  const sel=view[page]||todayStr(),t=todayStr();
+  const has=calHasSet();
+  const first=new Date(calY,calM,1);
+  const startW=first.getDay();
+  const dim=new Date(calY,calM+1,0).getDate();
+  const cells=[];
+  for(let i=0;i<startW;i++)cells.push('<span class="cal-cell blank"></span>');
+  for(let i=1;i<=dim;i++){
+    const ds=calY+'-'+pad(calM+1)+'-'+pad(i);
+    const fut=ds>t;
+    cells.push(`<button type="button" class="cal-cell${ds===t?' today':''}${ds===sel?' sel':''}" data-act="cal-day" data-page="${page}" data-d="${ds}" ${fut?'disabled':''} aria-label="${ds}">${i}${has.has(ds)?'<span class="cal-dot"></span>':''}</button>`);
+  }
+  const need=(Math.ceil(cells.length/7)*7)-cells.length;
+  for(let i=0;i<need;i++)cells.push('<span class="cal-cell blank"></span>');
+  return `<div class="cal-week">${'日一二三四五六'.split('').map(w=>`<span>${w}</span>`).join('')}</div>
+    <div class="cal-grid">${cells.join('')}</div>
+    <div class="cal-foot"><button type="button" class="btn btn-ghost sm" data-act="cal-today" data-page="${page}">回到今天</button></div>`;
+}
+function openCalSheet(page){
+  const d0=view[page]||todayStr();
+  const p0=parseD(d0);
+  calY=p0.getFullYear();calM=p0.getMonth();
+  openSheet({
+    title:'选择日期',
+    noSubmit:true,
+    html:`
+      <div class="cal-head">
+        <button type="button" class="dnav-btn" data-act="cal-shift" data-page="${page}" data-delta="-1" aria-label="上个月">${ic('chevL')}</button>
+        <div class="cal-title" id="calTitle">${calY}年${calM+1}月</div>
+        <button type="button" class="dnav-btn" data-act="cal-shift" data-page="${page}" data-delta="1" aria-label="下个月">${ic('chevR')}</button>
+      </div>
+      <div id="calBody">${calMonthHTML(page)}</div>`
+  });
+}
+function calShift(delta,page){
+  calM+=delta;
+  if(calM<0){calM=11;calY--}
+  if(calM>11){calM=0;calY++}
+  const tt=$('#calTitle'),tb=$('#calBody');
+  if(tt)tt.textContent=calY+'年'+(calM+1)+'月';
+  if(tb)tb.innerHTML=calMonthHTML(page);
+}
+
 /* ================= 页面渲染 ================= */
 let cur='home';
-const view={meals:todayStr(),bowel:todayStr(),walk:todayStr()};
+const view={home:todayStr(),meals:todayStr(),bowel:todayStr(),walk:todayStr()};
 const state={browse:'all'};
 
 function go(page){
@@ -1053,16 +1156,18 @@ function dateNav(page){
     <button type="button" class="dnav-btn" data-act="nav-date" data-page="${page}" data-delta="-1" aria-label="前一天">${ic('chevL')}</button>
     ${isToday?`<span class="dnav-label">${dateLabel(d)}</span>`:`<button type="button" class="dnav-label ghost" data-act="goto-today" data-page="${page}">${dateLabel(d)} · 回今天</button>`}
     <button type="button" class="dnav-btn" ${d>=t?'disabled':''} data-act="nav-date" data-page="${page}" data-delta="1" aria-label="后一天">${ic('chevR')}</button>
+    <button type="button" class="dnav-btn" data-act="open-cal" data-page="${page}" aria-label="日历选日期">${ic('cal')}</button>
   </div>`;
 }
 
 /* ---- 首页 ---- */
 function renderHome(){
-  const t=todayStr();
+  const t=view.home||todayStr(),tt=todayStr();
+  const isToday=t===tt;
   const hr=new Date().getHours();
   const greet=hr<5?'夜深了':hr<9?'早上好':hr<12?'上午好':hr<14?'中午好':hr<18?'下午好':'晚上好';
   const nick=db.settings.nickname?'，'+esc(db.settings.nickname):'';
-  const now=new Date();
+  const vd=parseD(t);
 
   const lw=latestWeight(),pw=prevWeightRec();
   const diff=lw&&pw?+(lw.value-pw.value).toFixed(1):null;
@@ -1072,11 +1177,11 @@ function renderHome(){
   const lastB=lastRecord(db.bowels);
   const sinceB=lastB?daysSince(lastB.date):null;
   const steps=dailySteps(t),goal=+db.settings.stepGoal||8000;
-  const isEmpty=!db.meals.length&&!db.weights.length&&!db.bowels.length&&!db.walks.length;
+  const isEmpty=!db.meals.length&&!db.weights.length&&!db.bowels.length&&!db.walks.length&&!db.journals.length;
 
   const wSer=weightSeries(7);
-  const sSer=lastNDays(7).map(d=>({label:shortD(d),value:dailySteps(d),today:d===t}));
-  const week=lastNDays(7);
+  const sSer=lastNDays(7,t).map(d=>({label:shortD(d),value:dailySteps(d),today:d===t}));
+  const week=lastNDays(7,t);
   const weekBowel=week.reduce((a,d)=>a+byDate(db.bowels,d).length,0);
   const weekSteps=week.reduce((a,d)=>a+dailySteps(d),0);
   const weekGoal=week.filter(d=>dailySteps(d)>=goal).length;
@@ -1093,21 +1198,29 @@ function renderHome(){
   ];
   const doneCnt=items.filter(i=>i.done).length;
 
-  const wVal=lw?fmt1(lw.value):'—';
-  const wSub=!lw?'点击记录':(diff!==null?(diff>0?`▲ ${fmt1(Math.abs(diff))} kg 较上次`:diff<0?`▼ ${fmt1(Math.abs(diff))} kg 较上次`:'与上次持平'):`${dateLabel(lw.date)}记录`);
-  const mealSub=slotDone.every(Boolean)?'早午晚都已记录 👍':`还差 ${['早餐','午餐','晚餐'].filter((x,i)=>!slotDone[i]).join('、')}`;
-  const bowelSub=bowelT>0?'今天已记录':(lastB?(sinceB>0?`距上次 ${sinceB} 天`:'就在今天'):'点击记录');
+  const dayWRecs=byDate(db.weights,t);
+  const dayW=dayWRecs.length?dayWRecs[dayWRecs.length-1]:null;
+  const wVal=isToday?(lw?fmt1(lw.value):'—'):(dayW?fmt1(dayW.value):'—');
+  const wSub=isToday?(!lw?'点击记录':(diff!==null?(diff>0?`▲ ${fmt1(Math.abs(diff))} kg 较上次`:diff<0?`▼ ${fmt1(Math.abs(diff))} kg 较上次`:'与上次持平'):`${dateLabel(lw.date)}记录`)):(dayW?'当天记录':'当天没有记录');
+  const mealSub=isToday?(slotDone.every(Boolean)?'早午晚都已记录 👍':`还差 ${['早餐','午餐','晚餐'].filter((x,i)=>!slotDone[i]).join('、')}`):(todayMeals.length?`当天共记录 ${todayMeals.length} 餐`:'当天没有记录');
+  const bowelSub=isToday?(bowelT>0?'今天已记录':(lastB?(sinceB>0?`距上次 ${sinceB} 天`:'就在今天'):'点击记录')):(bowelT?`当天 ${bowelT} 次`:'当天没有记录');
   const walkPct=goal?Math.round(steps/goal*100):0;
   const walkVal=steps>=10000?(steps/10000).toFixed(1)+'<small>万</small>':(steps?String(steps):'—');
   const wOut=workoutsOf(t);
   const outKm=+wOut.reduce((a,e)=>a+(+e.km||0),0).toFixed(1);
-  const walkSub=steps<=0?(wOut.length?`今日锻炼 ${wOut.length} 次 · ${outKm} km`:'去锻炼 / 填手表'):(steps>=goal?`目标达成 ${walkPct}% 🎉`:`完成目标 ${walkPct}%${wOut.length?` · 锻炼 ${outKm} km`:''}`);
+  const walkSub=isToday?(steps<=0?(wOut.length?`今日锻炼 ${wOut.length} 次 · ${outKm} km`:'去锻炼 / 填手表'):(steps>=goal?`目标达成 ${walkPct}% 🎉`:`完成目标 ${walkPct}%${wOut.length?` · 锻炼 ${outKm} km`:''}`)):(steps?`${steps} 步${wOut.length?` · 锻炼 ${outKm} km`:''}`:(wOut.length?`锻炼 ${wOut.length} 次 · ${outKm} km`:'当天没有记录'));
+  const jr=journalOf(t);
+  const ga=p=>isToday?`data-act="goto" data-page="${p}"`:`data-act="goto-date" data-page="${p}"`;
 
   $('#page-home').innerHTML=`
     <div class="home-head">
-      <div><div class="home-hi">${greet}${nick}</div><div class="home-date">${now.getMonth()+1}月${now.getDate()}日 · 周${'日一二三四五六'[now.getDay()]}</div></div>
-      <div class="brand">🌱 健康手账</div>
+      <div><div class="home-hi">${greet}${nick}</div><div class="home-date">${vd.getMonth()+1}月${vd.getDate()}日 · 周${weekdayCn(t)}</div></div>
+      <div class="head-actions">
+        <button type="button" class="icon-btn" data-act="open-cal" data-page="home" aria-label="日历选日期">${ic('cal')}</button>
+        <div class="brand">🌱 健康手账</div>
+      </div>
     </div>
+    ${!isToday?dateNav('home'):''}
     ${isEmpty?`<div class="onboard"><h2>欢迎使用健康手账 🌱</h2>
       <p>记录三餐、体重、排便和步行，看看自己的身体节奏。不需要登录，所有数据只保存在这台设备的浏览器里。</p>
       <div class="onboard-btns"><button type="button" class="btn btn-white" data-act="demo">载入示例数据看看</button>
@@ -1116,41 +1229,46 @@ function renderHome(){
       <div class="tile" data-act="open-weight-t">
         <div class="tile-ic" style="--tc:#0E9F6E;--tcbg:#E2F4EB">${ic('scale')}</div>
         <div class="tile-label">体重</div>
-        <div class="tile-value">${wVal}${lw?'<small>kg</small>':''}</div>
+        <div class="tile-value">${wVal}${(isToday?lw:dayW)?'<small>kg</small>':''}</div>
         <div class="tile-sub ${wSub.includes('▼')?'good':''}">${wSub}</div>
       </div>
-      <div class="tile" data-act="goto" data-page="meals">
+      <div class="tile" ${ga('meals')}>
         <div class="tile-ic" style="--tc:#E8962A;--tcbg:#FBF1DF">${ic('meal')}</div>
         <div class="tile-label">三餐</div>
         <div class="tile-value">${todayMeals.length}<small>餐</small></div>
-        <div class="tile-sub ${slotDone.every(Boolean)?'good':''}">${mealSub}</div>
+        <div class="tile-sub ${isToday&&slotDone.every(Boolean)?'good':''}">${mealSub}</div>
       </div>
-      <div class="tile" data-act="goto" data-page="bowel">
+      <div class="tile" ${ga('bowel')}>
         <div class="tile-ic" style="--tc:#A06B42;--tcbg:#F5ECE0">${ic('poop')}</div>
         <div class="tile-label">排便</div>
         <div class="tile-value">${bowelT?bowelT+'<small>次</small>':'—'}</div>
         <div class="tile-sub">${bowelSub}</div>
       </div>
-      <div class="tile" data-act="goto" data-page="walk">
+      <div class="tile" ${ga('walk')}>
         <div class="tile-ic" style="--tc:#3E7CFA;--tcbg:#E8EFFD">${ic('walk')}</div>
         <div class="tile-label">步行</div>
         <div class="tile-value">${walkVal}<small>步</small></div>
         <div class="tile-sub ${steps>=goal?'good':''}">${walkSub}</div>
       </div>
     </div>
-    <div class="card"><div class="card-h"><div><div class="card-t">今日打卡</div><div class="card-s">${doneCnt}/${items.length} 项已完成</div></div></div>
+    ${isToday?`<div class="card"><div class="card-h"><div><div class="card-t">今日打卡</div><div class="card-s">${doneCnt}/${items.length} 项已完成</div></div></div>
       ${items.map(it=>`<div class="check-row"><div class="check-emoji">${it.emoji}</div><div class="check-name">${it.name}</div>
         ${it.done?`<span class="check-done">${ic('check')}</span>`:`<button type="button" class="check-go" data-act="${it.act}"${it.type?` data-type="${it.type}"`:''}>去记录 ›</button>`}</div>`).join('')}
+    </div>`:''}
+    <div class="card" data-act="edit-journal" data-date="${t}">
+      <div class="card-h"><div><div><div class="card-t">每日小记</div><div class="card-s">${isToday?'今天做了什么，随手记几句':'查看这一天做了什么'}</div></div></div>
+        <button type="button" class="link-btn" data-act="edit-journal" data-date="${t}">${jr?'编辑':'写一写'}</button></div>
+      ${jr?`<div class="journal-text">${esc(jr.content)}</div>`:`<div class="journal-empty">${isToday?'今天做了什么？写几句，以后翻回来很有意思 😊':'这一天没有写小记'}</div>`}
     </div>
     <div class="card"><div class="card-h"><div><div class="card-t">体重趋势</div><div class="card-s">${wSer.length?`最近 ${wSer.length} 次记录`:'暂无记录'}</div></div>
       <button type="button" class="link-btn" data-act="goto" data-page="meals">管理</button></div>
       ${wSer.length>1?svgLine(wSer):`<div class="chart-empty">${wSer.length===1?'已有 1 次记录，再来一次就能看到趋势啦':'记录体重后这里会显示趋势'}</div>`}
     </div>
-    <div class="card"><div class="card-h"><div><div class="card-t">步行近 7 天</div><div class="card-s">目标每天 ${shortNum(goal)} 步</div></div>
+    <div class="card"><div class="card-h"><div><div class="card-t">${isToday?'步行近 7 天':'步行 · 截至所选日的前 7 天'}</div><div class="card-s">目标每天 ${shortNum(goal)} 步</div></div>
       <button type="button" class="link-btn" data-act="goto" data-page="walk">详情</button></div>
       ${svgBars(sSer,{goal})}
     </div>
-    <div class="card"><div class="card-h"><div><div class="card-t">近 7 天小结</div></div></div>
+    <div class="card"><div class="card-h"><div><div class="card-t">${isToday?'近 7 天小结':'所选日前 7 天小结'}</div></div></div>
       <div class="chips-stat">
         <span class="schip">💩 排便 <b>${weekBowel}</b> 次</span>
         <span class="schip">🚶 日均 <b>${shortNum(weekSteps/7)}</b> 步</span>
@@ -1327,11 +1445,12 @@ function sumOf(t,r){
   if(t==='weights')return `${fmt1(r.value)} kg`;
   if(t==='bowels')return `${r.bristol} 型 · ${easeName(r.ease)}`;
   if(t==='dailies')return `总步数 ${shortNum(r.steps)}${r.kcal?` · ${r.kcal} 千卡`:''}`;
+  if(t==='journals'){const c=(r.content||'').replace(/\s+/g,' ');return esc(c.length>42?c.slice(0,42)+'…':c)}
   return `${r.mins?r.mins+' 分钟':''}${r.km?`${r.mins?' · ':''}${r.km} km`:''} · 配速 ${fmtPace(r.mins,r.km)}`;
 }
 function allRecords(){
   const out=[];
-  for(const t of ['meals','weights','bowels','walks','dailies'])db[t].forEach(r=>out.push({t,r}));
+  for(const t of ['meals','weights','bowels','walks','dailies','journals'])db[t].forEach(r=>out.push({t,r}));
   out.sort((a,b)=>((b.r.date||'')+(b.r.time||'')).localeCompare((a.r.date||'')+(a.r.time||'')));
   return out;
 }
@@ -1340,16 +1459,16 @@ function renderData(){
   const bmi=bmiInfo();
   const lw=latestWeight();
   const days=recordDays();
-  const allDates=new Set();['meals','weights','bowels','walks','dailies'].forEach(t=>db[t].forEach(r=>allDates.add(r.date)));
+  const allDates=new Set();TYPES.forEach(t=>db[t].forEach(r=>allDates.add(r.date)));
   const sorted=[...allDates].sort();
   const range=sorted.length?`${shortD(sorted[0])} – ${shortD(sorted[sorted.length-1])}`:'—';
-  const counts={meals:db.meals.length,weights:db.weights.length,bowels:db.bowels.length,walks:db.walks.length,dailies:db.dailies?db.dailies.length:0};
-  const total=counts.meals+counts.weights+counts.bowels+counts.walks;
+  const counts={meals:db.meals.length,weights:db.weights.length,bowels:db.bowels.length,walks:db.walks.length,dailies:db.dailies?db.dailies.length:0,journals:db.journals?db.journals.length:0};
+  const total=counts.meals+counts.weights+counts.bowels+counts.walks+counts.journals;
 
   let rows=allRecords();
   if(state.browse!=='all')rows=rows.filter(x=>x.t===state.browse);
   rows=rows.slice(0,60);
-  const browseChips=[['all','全部 '+total],['meals','三餐 '+counts.meals],['weights','体重 '+counts.weights],['bowels','排便 '+counts.bowels],['walks','锻炼 '+counts.walks],['dailies','手表 '+counts.dailies]]
+  const browseChips=[['all','全部 '+total],['meals','三餐 '+counts.meals],['weights','体重 '+counts.weights],['bowels','排便 '+counts.bowels],['walks','锻炼 '+counts.walks],['dailies','手表 '+counts.dailies],['journals','小记 '+counts.journals]]
     .map(([v,n])=>`<button type="button" class="chip ${state.browse===v?'on':''}" data-act="browse-type" data-v="${v}">${n}</button>`).join('');
   const browseRows=rows.length?rows.map(({t,r})=>`<div class="rec" data-act="edit-any" data-type="${t}" data-id="${r.id}">
       <div class="rec-ic emoji ${t}-bg">${TYPE_META[t].icon}</div>
@@ -1377,7 +1496,7 @@ function renderData(){
         <div class="dg"><div class="dg-e">💩</div><div class="dg-v">${counts.bowels}</div><div class="dg-l">排便记录</div></div>
         <div class="dg"><div class="dg-e">🚶</div><div class="dg-v">${counts.walks}</div><div class="dg-l">锻炼记录</div></div>
       </div>
-      <div class="stat-line">共记录 <b>${days}</b> 天 · ${range}</div>
+      <div class="stat-line">共记录 <b>${days}</b> 天 · 每日小记 <b>${counts.journals}</b> 篇 · ${range}</div>
     </div>
     <div class="card">
       <div class="card-h"><div><div class="card-t">数据管理</div></div></div>
@@ -1396,7 +1515,7 @@ function renderData(){
       <div class="chips" style="margin-bottom:8px">${browseChips}</div>
       ${browseRows}
     </div>
-    <div class="foot-note">健康手账 v1.4 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
+    <div class="foot-note">健康手账 v1.5 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
 }
 
 /* ================= 数据操作 ================= */
@@ -1425,7 +1544,7 @@ function doImport(inp){
     if(!ok){toast('文件格式不正确，导入失败','warn');return}
     const n=d.meals.length+d.weights.length+d.bowels.length+d.walks.length;
     confirmDialog({title:'导入备份',msg:`备份中有 ${n} 条记录，导入后将覆盖当前全部数据和设置。确定继续吗？`,okText:'导入',onOk:()=>{
-      db={meals:d.meals,weights:d.weights,bowels:d.bowels,walks:d.walks,dailies:Array.isArray(d.dailies)?d.dailies:[],deleted:Array.isArray(d.deleted)?d.deleted:[],settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
+      db={meals:d.meals,weights:d.weights,bowels:d.bowels,walks:d.walks,dailies:Array.isArray(d.dailies)?d.dailies:[],journals:Array.isArray(d.journals)?d.journals:[],deleted:Array.isArray(d.deleted)?d.deleted:[],settings:Object.assign({},DEF_SETTINGS,d.settings||{})};
       save();go('home');toast('导入成功，共恢复 '+n+' 条记录');
       /* 备份里带同步码时，一并恢复绑定 */
       const code=normCode(d.sync&&d.sync.code);
@@ -1466,6 +1585,10 @@ function buildDemo(){
         ease:br<=2?'hard':(br>=6?'easy':(Math.random()<.6?'normal':'easy')),
         color:['棕黄','棕黄','棕黄','深棕','深棕','墨绿'][Math.floor(Math.random()*6)],note:''});
     }
+    if(i!==0&&Math.random()<.45){
+      const notes=['上午开例会，下午整理了季度材料','下雨，在家做了半小时拉伸','和同事午饭散步 20 分钟','晚饭后散步，睡前看了一章书','整理房间，扔掉两箱旧物','陪爸妈逛了超市，走路来回','加班到八点，回家泡脚早睡'];
+      db.journals.push({id:'jr-'+d,date:d,content:pick(notes),updatedAt:Date.now()});
+    }
   }
 }
 function genDemo(){
@@ -1486,18 +1609,34 @@ document.addEventListener('click',e=>{
     const act=el.dataset.act,id=el.dataset.id;
     switch(act){
       case 'goto':go(el.dataset.page);break;
+      case 'goto-date':{
+        const p=el.dataset.page;
+        ['home','meals','bowel','walk'].forEach(k=>view[k]=view.home||todayStr());
+        go(p);break;}
       case 'nav-date':{
         const p=el.dataset.page;
         const nd=addDays(view[p],+el.dataset.delta);
         if(nd<=todayStr()){view[p]=nd;render(p)}
         break;}
-      case 'goto-today':view[el.dataset.page]=todayStr();render(el.dataset.page);break;
+      case 'goto-today':
+        ['home','meals','bowel','walk'].forEach(k=>view[k]=todayStr());
+        render(el.dataset.page);break;
+      case 'open-cal':openCalSheet(el.dataset.page);break;
+      case 'cal-shift':calShift(+el.dataset.delta,el.dataset.page);break;
+      case 'cal-day':{
+        const d=el.dataset.d;
+        ['home','meals','bowel','walk'].forEach(k=>view[k]=d);
+        closeSheet();render(cur);break;}
+      case 'cal-today':{
+        ['home','meals','bowel','walk'].forEach(k=>view[k]=todayStr());
+        closeSheet();render(cur);break;}
+      case 'edit-journal':openJournalSheet(el.dataset.date||todayStr());break;
       case 'open-meal':openMealSheet(null,view.meals,el.dataset.type);break;
       case 'open-meal-t':openMealSheet(null,todayStr(),el.dataset.type);break;
       case 'edit-meal':openMealSheet(findById('meals',id));break;
       case 'del-meal':confirmDel('meals',id);break;
       case 'open-weight':openWeightSheet(null,view.meals);break;
-      case 'open-weight-t':openWeightSheet(null,todayStr());break;
+      case 'open-weight-t':openWeightSheet(null,cur==='home'?(view.home||todayStr()):todayStr());break;
       case 'edit-weight':openWeightSheet(findById('weights',id));break;
       case 'del-weight':confirmDel('weights',id);break;
       case 'open-bowel':openBowelSheet(null,view.bowel);break;
@@ -1508,7 +1647,7 @@ document.addEventListener('click',e=>{
       case 'open-walk-t':openWalkSheet(null,todayStr());break;
       case 'edit-walk':openWalkSheet(findById('walks',id));break;
       case 'del-walk':confirmDel('walks',id);break;
-      case 'open-daily':openDailySheet(cur==='walk'?view.walk:todayStr());break;
+      case 'open-daily':openDailySheet(cur==='walk'?view.walk:(cur==='home'?(view.home||todayStr()):todayStr()));break;
       case 'edit-daily':openDailySheet(findById('dailies',id).date);break;
       case 'del-daily':confirmDel('dailies',id);break;
       case 'edit-any':{
@@ -1518,6 +1657,7 @@ document.addEventListener('click',e=>{
         else if(t==='weights')openWeightSheet(r);
         else if(t==='bowels')openBowelSheet(r);
         else if(t==='dailies')openDailySheet(r.date);
+        else if(t==='journals')openJournalSheet(r.date);
         else openWalkSheet(r);
         break;}
       case 'del-any':confirmDel(el.dataset.type,id);break;
@@ -1532,10 +1672,10 @@ document.addEventListener('click',e=>{
       case 'sync-copy':copySyncCode();break;
       case 'sync-rotate':syncRotate();break;
       case 'sync-off':syncOff();break;
-      case 'clear':confirmDialog({title:'清空全部记录',msg:'将删除全部三餐、体重、排便和步行记录（昵称、身高等设置会保留），此操作无法撤销。若已开启云同步，删除也会同步到其他设备。',okText:'全部删除',danger:true,
+      case 'clear':confirmDialog({title:'清空全部记录',msg:'将删除全部三餐、体重、排便、步行、手表数据和小记（昵称、身高等设置会保留），此操作无法撤销。若已开启云同步，删除也会同步到其他设备。',okText:'全部删除',danger:true,
         onOk:()=>{
           TYPES.forEach(t=>db[t].forEach(r=>{if(!r.updatedAt)r.updatedAt=Date.now();db.deleted.push({id:r.id,at:Date.now()})}));
-          db.meals=[];db.weights=[];db.bowels=[];db.walks=[];
+          TYPES.forEach(t=>db[t]=[]);
           if(db.deleted.length>500)db.deleted=db.deleted.slice(-400);
           save();render(cur);toast('已清空');
         }});break;
@@ -1571,11 +1711,15 @@ document.addEventListener('change',e=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='syncCodeInput'){e.preventDefault();syncBind()}
 });
-/* 锻炼 sheet：配速实时计算 */
+/* 锻炼 sheet：配速实时计算；小记：字数统计 */
 sheetRoot.addEventListener('input',e=>{
   if(e.target.id==='wMins'||e.target.id==='wKm'){
     const p=$('#wPace');
     if(p)p.textContent=fmtPace(+($('#wMins')?$('#wMins').value:0)||0,+($('#wKm')?$('#wKm').value:0)||0);
+  }
+  if(e.target.id==='jText'){
+    const c=$('#jCnt');
+    if(c)c.textContent=e.target.value.length;
   }
 });
 
