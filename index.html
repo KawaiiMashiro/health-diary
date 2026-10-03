@@ -1035,9 +1035,9 @@ function openWalkSheet(entry,date){
       const mins=Math.round(+$('#wMins').value)||0;
       const km=+$('#wKm').value||0;
       if(!(mins>0)&&!(km>0)){toast('时长和距离至少填一项','warn');return false}
-      const num=(id,mn,mx)=>{const v=+$('#'+id).value;return v?(v<mn||v>mx?null:v):null};
+      const num=(id,mn,mx)=>{const s=$('#'+id).value.trim();if(!s)return null;const v=+s;return(v>=mn&&v<=mx)?v:'BAD'};
       const hr=num('wHr',40,220),hrMin=num('wHrMin',40,220),hrMax=num('wHrMax',40,220),kcal=num('wKcal',0,5000);
-      if(hr===null||hrMin===null||hrMax===null||kcal===null){toast('心率 / 千卡的数值范围看起来不对','warn');return false}
+      if(hr==='BAD'||hrMin==='BAD'||hrMax==='BAD'||kcal==='BAD'){toast('心率 / 千卡的数值范围看起来不对','warn');return false}
       const rec={id:isEdit?entry.id:uid(),date:d,updatedAt:Date.now(),time:nowHM(),
         mins,km:+km.toFixed(2),hr,hrMin,hrMax,kcal,note:$('#wNote').value.trim()};
       if(isEdit){rec.time=entry.time||nowHM();Object.assign(entry,rec)}else db.walks.push(rec);
@@ -1531,7 +1531,7 @@ function renderData(){
       <div class="chips" style="margin-bottom:8px">${browseChips}</div>
       ${browseRows}
     </div>
-    <div class="foot-note">健康手账 v1.5.1 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
+    <div class="foot-note">健康手账 v1.5.2 · 无账号；未开启云同步时数据仅存本机<br>开启云同步后，数据以 AES 加密密文经第三方服务中转，云端无法解密<br>清理浏览器数据前，请先导出备份</div>`;
 }
 
 /* ================= 数据操作 ================= */
